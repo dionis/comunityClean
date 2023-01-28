@@ -1,15 +1,13 @@
 import { Schema, model } from "mongoose";
-
-const groupSchema = new Schema(
+import { userSchema } from "./user";
+const adminSchema = new Schema(
   {
-    gNumber: {
+    user: userSchema,
+    local: {
       type: String,
     },
     medium: {
       type: String,
-    },
-    quantity: {
-      type: Number,
     },
   },
   {
@@ -18,4 +16,4 @@ const groupSchema = new Schema(
   }
 );
 
-export default model("Group", groupSchema);
+export default model("Admin", adminSchema);

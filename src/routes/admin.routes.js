@@ -1,36 +1,36 @@
 import express, { Router } from "express";
-import User from "../models/user";
-import {userRule, userRuleNotR} from "../validation/user";
-const { body, validationResult, param } = require("express-validator");
+import Admin from "../models/admin";
+import { adminRule, adminRuleNotR } from "../validation/admin";
+const { validationResult, param } = require("express-validator");
 
-const users = Router();
-users.use(express.json());
+const admins = Router();
+admins.use(express.json());
 
-users.post("/api/v1/users", userRule, async (req, res) => {
+admins.post("/api/v1/admins", adminRule, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const newUser = User(req.body);
-    const userSaved = await newUser.save();
-    res.send(userSaved);
+    const newAdmin = Admin(req.body);
+    const adminSaved = await newAdmin.save();
+    res.send(adminSaved);
   } catch (error) {
     res.json({ message: error });
   }
 });
 
-users.get("/api/v1/users", async (req, res) => {
+admins.get("/api/v1/admins", async (req, res) => {
   try {
-    const user = await User.find();
-    res.send(user);
+    const admin = await Admin.find();
+    res.send(admin);
   } catch (error) {
     res.json({ message: error });
   }
 });
 
-users.get(
-  "/api/v1/users/:id",
+admins.get(
+  "/api/v1/admins/:id",
   [param("id", "El id debe ser un string").exists().isString()],
   async (req, res) => {
     try {
@@ -38,8 +38,8 @@ users.get(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const user = await User.findById(req.params.id);
-      res.send(user);
+      const admin = await Admin.findById(req.params.id);
+      res.send(admin);
     } catch (error) {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -51,22 +51,20 @@ users.get(
   }
 );
 
-users.put(
-  "/api/v1/users/:id",
-  [
-    param("id").exists().withMessage("EL id es requerido").isString(),
-  ].concat(userRuleNotR),
+admins.put(
+  "/api/v1/admins/:id",
+  [param("id", "El id debe ser un string").exists().isString()].concat(
+    adminRuleNotR
+  ),
   async (req, res) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-
       const { name, lastName, username, password, ci, phoneNumber } = req.body;
-
       if (name !== undefined) {
-        await User.findOneAndUpdate(
+        await Admin.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -74,7 +72,7 @@ users.put(
         );
       }
       if (lastName !== undefined) {
-        await User.findOneAndUpdate(
+        await Admin.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -82,7 +80,7 @@ users.put(
         );
       }
       if (username !== undefined) {
-        await User.findOneAndUpdate(
+        await Admin.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -90,7 +88,7 @@ users.put(
         );
       }
       if (password !== undefined) {
-        await User.findOneAndUpdate(
+        await Admin.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -98,7 +96,7 @@ users.put(
         );
       }
       if (ci !== undefined) {
-        await User.findOneAndUpdate(
+        await Admin.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -106,7 +104,7 @@ users.put(
         );
       }
       if (phoneNumber !== undefined) {
-        await User.findOneAndUpdate(
+        await Admin.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -114,15 +112,15 @@ users.put(
         );
       }
 
-      res.send(await User.findById(req.params.id));
+      res.send(await Admin.findById(req.params.id));
     } catch (error) {
       res.json({ message: error });
     }
   }
 );
 
-users.delete(
-  "/api/v1/users/:id",
+admins.delete(
+  "/api/v1/admins/:id",
   [param("id", "El id debe ser un string").exists().isString()],
   async (req, res) => {
     try {
@@ -130,7 +128,7 @@ users.delete(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const removedRequests = await User.deleteOne({
+      const removedRequests = await Admin.deleteOne({
         _id: req.params.id,
       });
       res.send(removedRequests);
@@ -140,4 +138,4 @@ users.delete(
   }
 );
 
-export default users;
+export default admins;

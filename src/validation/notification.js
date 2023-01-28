@@ -9,4 +9,14 @@ const notificationRule = [
     .optional()
     .isBoolean(),
 ];
-export default notificationRule;
+const notificationRuleNotR = [
+  body("message", "El mensaje debe ser un texto").optional().isString(),
+  body("isSended", "El estado de enviado debe ser True o False")
+    .optional()
+    .isBoolean(),
+  body("isRecived", "El estado de recivido debe ser True o False")
+    .optional()
+    .isBoolean(),
+];
+
+export {notificationRule, notificationRuleNotR};

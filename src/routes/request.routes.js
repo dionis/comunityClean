@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import collectRequest from "../models/request";
-import requestRule from "../validation/requests";
+import {requestRule,requestRuleNotR} from "../validation/requests";
 const { validationResult, param } = require("express-validator");
 
 const cRequests = Router();
@@ -31,7 +31,7 @@ cRequests.get("/api/v1/requests", async (req, res) => {
 
 cRequests.get(
   "/api/v1/requests/:id",
-  [param("id", "El id debe ser un string").exists().isNumeric()],
+  [param("id", "El id debe ser un string").exists().isString()],
   async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -50,7 +50,7 @@ cRequests.get(
 
 cRequests.put(
   "/api/v1/requests/:id",
-  [param("id", "El id debe ser un string").exists().isNumeric(), requestRule],
+  [param("id", "El id debe ser un string").exists().isString()].concat(requestRuleNotR),
   async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -101,7 +101,7 @@ cRequests.put(
 
 cRequests.delete(
   "/api/v1/requests/:id",
-  [param("id", "El id debe ser un string").exists().isNumeric()],
+  [param("id", "El id debe ser un string").exists().isString()],
   async (req, res) => {
     try {
       const removedRequests = await collectRequest.deleteOne({

@@ -4,7 +4,6 @@ const requestSchema = new Schema(
   {
     amountGarbage: {
       type: Number,
-      require: true,
     },
     stat: {
       type: Boolean,
@@ -13,7 +12,6 @@ const requestSchema = new Schema(
     image_url: String,
     locations: {
       type: String,
-      require: true,
     },
   },
   {
