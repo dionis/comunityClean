@@ -1,5 +1,8 @@
-const { body } = require("express-validator");
+const { body, check } = require("express-validator");
+import group from "../models/group";
+import user from "../models/user";
 import admin from "../models/admin";
+import worker from "../models/worker";
 
 const requireVal = (path) => [
   body(`${path}.name`)
@@ -21,14 +24,21 @@ const requireVal = (path) => [
     .withMessage("El nombre de usuario es requerido")
     .isString()
     .withMessage("El nombre de usuario debe ser un String")
-    .withMessage("Este usuario ya fue registrado")
     .custom(async (value) => {
-      const checkUser = await admin.findOne({ username: value });
+      const checkUser = await user.findOne({ username: value });
       if (checkUser != null) {
         return Promise.reject("Error");
       }
     })
-    .withMessage("Este usuario ya fue registrado"),
+    .withMessage("Este usuario ya fue registrado")
+    .custom(async (value) => {
+      const checkUser = await worker.findOne({ username: value });
+      if (checkUser != null) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este usuario ya fue registrado")
+    ,
   body(`${path}.password`)
     .exists()
     .withMessage("La contraseña es requerida")
@@ -62,14 +72,20 @@ const notRequireVal = (path) => [
     .optional()
     .isString()
     .withMessage("El nombre de usuario debe ser un String")
-
     .custom(async (value) => {
-      const checkUser = await admin.findOne({ username: value });
+      const checkUser = await user.findOne({ username: value });
       if (checkUser != null) {
         return Promise.reject("Error");
       }
     })
-    .withMessage("Este usuario ya fue registrado"),
+    .withMessage("Este usuario ya fue registrado")
+    .custom(async (value) => {
+      const checkUser = await worker.findOne({ username: value });
+      if (checkUser != null) {
+        return Promise.reject("Error");
+      }
+    }),
+
   body(`${path}.password`).optional().isString(),
   body(`${path}.ci`)
     .optional()
@@ -82,30 +98,45 @@ const notRequireVal = (path) => [
     .withMessage("El dato debe ser numerico"),
 ];
 
-const adminRule = [
+const workerRule = [
   ...requireVal("user"),
-  body("local")
+  body("isBoss")
     .exists()
-    .withMessage("El local es requerido")
-    .isString()
-    .withMessage("El local tiene que ser un dato de tipo texto"),
-  body("medium")
+    .withMessage("El campo es requerido")
+    .isBoolean()
+    .withMessage("El dato debe ser un booleano"),
+  body("gNumber")
     .exists()
-    .withMessage("El medio de telefono es requerido")
-    .isString()
-    .withMessage("El dato debe ser de tipo texto"),
+    .withMessage("El numero de brigada es requerido")
+    .isNumeric()
+    .withMessage("El dato debe ser numerico")
+    .custom(async (value) => {
+      const checkGroup = await group.findOne({ gNumber: value });
+      if (checkGroup == null) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("El numero no existe"),
 ];
 
-const adminRuleNotR = [
+const workerRuleNotR = [
   ...notRequireVal("user"),
-  body("local")
+  body("isBoss")
     .optional()
-    .isString()
-    .withMessage("El local tiene que ser un dato de tipo texto"),
-  body("medium")
+    .isBoolean()
+    .withMessage("El dato debe ser un booleano"),
+  body("gNumber")
     .optional()
-    .isString()
-    .withMessage("El dato debe ser de tipo texto"),
+    .isNumeric()
+    .withMessage("El dato debe ser numerico")
+    .custom((value) => {
+      return group.findOne({ gNumber: value }, (result) => {
+        if (result) {
+          return Error("xd");
+        }
+      });
+    })
+    .withMessage("El numero no esta registrado"),
 ];
 
-export { adminRule, adminRuleNotR };
+export { workerRule, workerRuleNotR };

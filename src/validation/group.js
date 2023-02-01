@@ -8,12 +8,11 @@ const groupRule = [
     .withMessage("Debe escribir el numero de la brigada")
     .isNumeric()
     .withMessage("El dato debe ser un numero")
-    .custom((value) => {
-      return Group.findOne({ gNumber: value }, (result) => {
-        if (result) {
-          throw Error("ERROR!");
-        }
-      });
+    .custom(async (value) => {
+      const checkGroup = await group.findOne({ gNumber: value });
+      if (checkGroup) {
+        return Promise.reject("Error");
+      }
     })
     .withMessage("El numero ya esta registrado"),
 

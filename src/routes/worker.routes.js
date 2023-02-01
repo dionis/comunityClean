@@ -1,36 +1,41 @@
 import express, { Router } from "express";
-import Admin from "../models/admin";
-import { adminRule, adminRuleNotR } from "../validation/admin";
+import group from "../models/group";
+import user, { userSchema } from "../models/user";
+import Worker from "../models/worker";
+import { workerRule, workerRuleNotR } from "../validation/worker";
 const { validationResult, param } = require("express-validator");
 
-const admins = Router();
-admins.use(express.json());
+const workers = Router();
+workers.use(express.json());
 
-admins.post("/api/v1/admins", adminRule, async (req, res) => {
+workers.post("/api/v1/workers", workerRule, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const newAdmin = Admin(req.body);
-    const adminSaved = await newAdmin.save();
-    res.send(adminSaved);
+    const newWorker = Worker(req.body);
+    const workerSaved = await newWorker.save();
+    res.send(workerSaved);
   } catch (error) {
     res.json({ message: error });
   }
 });
 
-admins.get("/api/v1/admins", async (req, res) => {
+workers.get("/api/v1/workers", async (req, res) => {
   try {
-    const admin = await Admin.find();
-    res.send(admin);
+    const worker = await Worker.find();
+    const test = await group.findOne({gNumber:4})
+    console.log(test);
+
+    res.send(worker);
   } catch (error) {
     res.json({ message: error });
   }
 });
 
-admins.get(
-  "/api/v1/admins/:id",
+workers.get(
+  "/api/v1/workers/:id",
   [param("id", "El id debe ser un string").exists().isString()],
   async (req, res) => {
     try {
@@ -38,8 +43,8 @@ admins.get(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const admin = await Admin.findById(req.params.id);
-      res.send(admin);
+      const worker = await Worker.findById(req.params.id);
+      res.send(worker);
     } catch (error) {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -51,10 +56,10 @@ admins.get(
   }
 );
 
-admins.put(
-  "/api/v1/admins/:id",
+workers.put(
+  "/api/v1/workers/:id",
   [param("id", "El id debe ser un string").exists().isString()].concat(
-    adminRuleNotR
+    workerRuleNotR
   ),
   async (req, res) => {
     try {
@@ -62,81 +67,65 @@ admins.put(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const { user, local, medium } = req.body;
+      const { user, isBoss, gNumber } = req.body
       if (user.name !== undefined) {
-        await Admin.findOneAndUpdate(
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { "user.name": user.name }
+          { name: user.name }
         );
       }
-      if (user.lastName !== undefined) {
-        await Admin.findOneAndUpdate(
+      if (lastName !== undefined) {
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { "user.lastName": user.lastName }
+          { lastName: lastName }
         );
       }
-      if (user.username !== undefined) {
-        await Admin.findOneAndUpdate(
+      if (username !== undefined) {
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { "user.username": user.username }
+          { username: username }
         );
       }
-      if (user.password !== undefined) {
-        await Admin.findOneAndUpdate(
+      if (password !== undefined) {
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { "user.password": user.password }
+          { password: password }
         );
       }
-      if (user.ci !== undefined) {
-        await Admin.findOneAndUpdate(
+      if (ci !== undefined) {
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { "user.ci": user.ci }
+          { ci: ci }
         );
       }
-      if (user.phoneNumber !== undefined) {
-        await Admin.findOneAndUpdate(
+      if (phoneNumber !== undefined) {
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { "user.phoneNumber": user.phoneNumber }
-        );
-      }
-      if (local !== undefined) {
-        await Admin.findOneAndUpdate(
-          {
-            _id: req.params.id,
-          },
-          { local: local }
-        );
-      }
-      if (medium !== undefined) {
-        await Admin.findOneAndUpdate(
-          {
-            _id: req.params.id,
-          },
-          { medium: medium }
+          { phoneNumber: phoneNumber }
         );
       }
 
-      res.send(await Admin.findById(req.params.id));
+      res.send(await Worker.findById(req.params.id));
     } catch (error) {
       res.json({ message: error });
     }
   }
 );
 
-admins.delete(
-  "/api/v1/admins/:id",
+workers.delete(
+  "/api/v1/workers/:id",
   [param("id", "El id debe ser un string").exists().isString()],
   async (req, res) => {
     try {
@@ -144,7 +133,7 @@ admins.delete(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const removedRequests = await Admin.deleteOne({
+      const removedRequests = await Worker.deleteOne({
         _id: req.params.id,
       });
       res.send(removedRequests);
@@ -154,4 +143,4 @@ admins.delete(
   }
 );
 
-export default admins;
+export default workers;

@@ -1,3 +1,5 @@
+import admin from "../models/admin";
+import group from "../models/group";
 import user from "../models/user";
 
 const { body } = require("express-validator");
@@ -10,7 +12,7 @@ const userRule = [
     .withMessage("El nombre debe ser un texto")
     .isAlpha()
     .withMessage("El nombre debe contener letras"),
-  body("lastName")
+  body("last_name")
     .exists()
     .withMessage("Debe escribir los apellidos")
     .isString()
@@ -25,6 +27,20 @@ const userRule = [
     .custom(async (value) => {
       const checkUser = await user.findOne({ username: value });
       if (checkUser) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este usuario ya fue registrado")
+    .custom(async (value) => {
+      const checkUser = await group.findOne({ username: value });
+      if (checkUser != null) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este usuario ya fue registrado")
+    .custom(async (value) => {
+      const checkUser = await admin.findOne({ username: value });
+      if (checkUser != null) {
         return Promise.reject("Error");
       }
     })
@@ -48,14 +64,28 @@ const userRule = [
 
 const userRuleNotR = [
   body("name").isString().withMessage("Debe ser un string").optional(),
-  body("lastName").isString().withMessage("Debe ser un string").optional(),
+  body("last_name").isString().withMessage("Debe ser un string").optional(),
   body("username")
     .optional()
     .isString()
     .withMessage("Debe ser un string")
     .custom(async (value) => {
       const checkUser = await user.findOne({ username: value });
-      if (checkUser) {
+      if (checkUser != null) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este usuario ya fue registrado")
+    .custom(async (value) => {
+      const checkUser = await worker.findOne({ username: value });
+      if (checkUser != null) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este usuario ya fue registrado")
+    .custom(async (value) => {
+      const checkUser = await admin.findOne({ username: value });
+      if (checkUser != null) {
         return Promise.reject("Error");
       }
     })
@@ -65,4 +95,4 @@ const userRuleNotR = [
   body("phoneNumber").optional().isNumeric().withMessage("Debe ser un numero"),
 ];
 
-export {userRule, userRuleNotR};
+export { userRule, userRuleNotR };

@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 const groupSchema = new Schema(
   {
     gNumber: {
-      type: String,
+      type: Number,
     },
     medium: {
       type: String,
