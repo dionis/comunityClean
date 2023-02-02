@@ -39,7 +39,7 @@ La estructura de la API es la siguiente
 ## Instalación de los modulos 
 
 ```bash
-npm run install
+npm install
 ```
 ## Iniciar la API
 Para iniciar la API primeramente hay que iniciar el servicio de Mongo DB con el siguiente comando
