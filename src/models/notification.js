@@ -4,7 +4,6 @@ const notificationSchema = new Schema(
   {
     message: {
       type: String,
-      require: true,
     },
     isSended: {
       type: Boolean,

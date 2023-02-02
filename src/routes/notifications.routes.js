@@ -1,6 +1,9 @@
 import express, { Router } from "express";
 import notification from "../models/notification";
-import notificationRule from "../validation/notification";
+import {
+  notificationRule,
+  notificationRuleNotR,
+} from "../validation/notification";
 const { validationResult, param } = require("express-validator");
 
 const notifications = Router();
@@ -60,9 +63,8 @@ notifications.get(
 notifications.put(
   "/api/v1/notifications/:id",
   [
-    param("id", "El id debe ser un string").exists().isString(),
-    notificationRule,
-  ],
+    param("id", "El id debe ser un string").exists().isString()
+  ].concat(notificationRuleNotR),
   async (req, res) => {
     try {
       const errors = validationResult(req);

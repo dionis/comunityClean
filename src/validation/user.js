@@ -1,3 +1,5 @@
+import admin from "../models/admin";
+import group from "../models/group";
 import user from "../models/user";
 
 const { body } = require("express-validator");
@@ -10,7 +12,7 @@ const userRule = [
     .withMessage("El nombre debe ser un texto")
     .isAlpha()
     .withMessage("El nombre debe contener letras"),
-  body("lastName")
+  body("last_name")
     .exists()
     .withMessage("Debe escribir los apellidos")
     .isString()
@@ -21,12 +23,26 @@ const userRule = [
     .exists()
     .withMessage("El nombre de usuario es requerido")
     .isString()
-    .custom((value) => {
-      return user.findOne({ username: value }, (result) => {
-        if (result) {
-          throw Error("ERROR!");
-        }
-      });
+    .withMessage("El nombre de usuario debe ser un String")
+    .custom(async (value) => {
+      const checkUser = await user.findOne({ username: value });
+      if (checkUser) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este usuario ya fue registrado")
+    .custom(async (value) => {
+      const checkUser = await group.findOne({ username: value });
+      if (checkUser != null) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este usuario ya fue registrado")
+    .custom(async (value) => {
+      const checkUser = await admin.findOne({ username: value });
+      if (checkUser != null) {
+        return Promise.reject("Error");
+      }
     })
     .withMessage("Este usuario ya fue registrado"),
   body("password")
@@ -46,4 +62,37 @@ const userRule = [
     .withMessage("El dato debe ser numerico"),
 ];
 
-export default userRule;
+const userRuleNotR = [
+  body("name").isString().withMessage("Debe ser un string").optional(),
+  body("last_name").isString().withMessage("Debe ser un string").optional(),
+  body("username")
+    .optional()
+    .isString()
+    .withMessage("Debe ser un string")
+    .custom(async (value) => {
+      const checkUser = await user.findOne({ username: value });
+      if (checkUser != null) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este usuario ya fue registrado")
+    .custom(async (value) => {
+      const checkUser = await worker.findOne({ username: value });
+      if (checkUser != null) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este usuario ya fue registrado")
+    .custom(async (value) => {
+      const checkUser = await admin.findOne({ username: value });
+      if (checkUser != null) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este usuario ya fue registrado"),
+  body("password").optional().isString().withMessage("Debe ser un string"),
+  body("ci").optional().isString().withMessage("Debe ser un string"),
+  body("phoneNumber").optional().isNumeric().withMessage("Debe ser un numero"),
+];
+
+export { userRule, userRuleNotR };

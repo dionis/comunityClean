@@ -1,3 +1,5 @@
+import group from "../models/group";
+
 const { body } = require("express-validator");
 
 const groupRule = [
@@ -6,12 +8,11 @@ const groupRule = [
     .withMessage("Debe escribir el numero de la brigada")
     .isNumeric()
     .withMessage("El dato debe ser un numero")
-    .custom((value) => {
-      return Group.findOne({ gNumber: value }, (result) => {
-        if (result) {
-          throw Error("ERROR!");
-        }
-      });
+    .custom(async (value) => {
+      const checkGroup = await group.findOne({ gNumber: value });
+      if (checkGroup) {
+        return Promise.reject("Error");
+      }
     })
     .withMessage("El numero ya esta registrado"),
 
@@ -23,4 +24,25 @@ const groupRule = [
     .isNumeric(),
 ];
 
-export default groupRule;
+const groupRuleNotR = [
+  body("gNumber", "Debe ser un numero")
+    .optional()
+    .isNumeric()
+    .withMessage("El dato debe ser un numero")
+    .custom(async (value) => {
+      const checkGroup = await group.findOne({ gNumber: value });
+      if (checkGroup) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este usuario ya fue registrado"),
+
+  body("medium", "Los medios de la brigada tienen que ser de tipo string")
+    .optional()
+    .isString(),
+  body("quantity", "La cantidad de trabajadores tiene que ser un número")
+    .optional()
+    .isNumeric(),
+];
+
+export { groupRule, groupRuleNotR };

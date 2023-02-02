@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import Group from "../models/group";
-import groupRule from "../validation/group";
+import { groupRule, groupRuleNotR } from "../validation/group";
 const { validationResult, param } = require("express-validator");
 
 const groups = Router();
@@ -32,7 +32,7 @@ groups.get("/api/v1/groups", async (req, res) => {
 
 groups.get(
   "/api/v1/groups/:id",
-  [param("id", "El id debe ser un string").exists().isNumeric()],
+  [param("id", "El id debe ser un string").exists().isString()],
   async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -50,7 +50,9 @@ groups.get(
 
 groups.put(
   "/api/v1/groups/:id",
-  [param("id", "El id debe ser un string").exists().isNumeric(), groupRule],
+  [param("id", "El id debe ser un string").exists().isString()].concat(
+    groupRuleNotR
+  ),
   async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -92,7 +94,7 @@ groups.put(
 
 groups.delete(
   "/api/v1/groups/:id",
-  [param("id", "El id debe ser un string").exists().isNumeric()],
+  [param("id", "El id debe ser un string").exists().isString()],
   async (req, res) => {
     try {
       const errors = validationResult(req);

@@ -1,36 +1,41 @@
 import express, { Router } from "express";
-import User from "../models/user";
-import {userRule, userRuleNotR} from "../validation/user";
-const { body, validationResult, param } = require("express-validator");
+import group from "../models/group";
+import user, { userSchema } from "../models/user";
+import Worker from "../models/worker";
+import { workerRule, workerRuleNotR } from "../validation/worker";
+const { validationResult, param } = require("express-validator");
 
-const users = Router();
-users.use(express.json());
+const workers = Router();
+workers.use(express.json());
 
-users.post("/api/v1/users", userRule, async (req, res) => {
+workers.post("/api/v1/workers", workerRule, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const newUser = User(req.body);
-    const userSaved = await newUser.save();
-    res.send(userSaved);
+    const newWorker = Worker(req.body);
+    const workerSaved = await newWorker.save();
+    res.send(workerSaved);
   } catch (error) {
     res.json({ message: error });
   }
 });
 
-users.get("/api/v1/users", async (req, res) => {
+workers.get("/api/v1/workers", async (req, res) => {
   try {
-    const user = await User.find();
-    res.send(user);
+    const worker = await Worker.find();
+    const test = await group.findOne({gNumber:4})
+    console.log(test);
+
+    res.send(worker);
   } catch (error) {
     res.json({ message: error });
   }
 });
 
-users.get(
-  "/api/v1/users/:id",
+workers.get(
+  "/api/v1/workers/:id",
   [param("id", "El id debe ser un string").exists().isString()],
   async (req, res) => {
     try {
@@ -38,8 +43,8 @@ users.get(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const user = await User.findById(req.params.id);
-      res.send(user);
+      const worker = await Worker.findById(req.params.id);
+      res.send(worker);
     } catch (error) {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -51,30 +56,28 @@ users.get(
   }
 );
 
-users.put(
-  "/api/v1/users/:id",
-  [
-    param("id").exists().withMessage("EL id es requerido").isString(),
-  ].concat(userRuleNotR),
+workers.put(
+  "/api/v1/workers/:id",
+  [param("id", "El id debe ser un string").exists().isString()].concat(
+    workerRuleNotR
+  ),
   async (req, res) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-
-      const { name, lastName, username, password, ci, phoneNumber } = req.body;
-
-      if (name !== undefined) {
-        await User.findOneAndUpdate(
+      const { user, isBoss, gNumber } = req.body
+      if (user.name !== undefined) {
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { name: name }
+          { name: user.name }
         );
       }
       if (lastName !== undefined) {
-        await User.findOneAndUpdate(
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -82,7 +85,7 @@ users.put(
         );
       }
       if (username !== undefined) {
-        await User.findOneAndUpdate(
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -90,7 +93,7 @@ users.put(
         );
       }
       if (password !== undefined) {
-        await User.findOneAndUpdate(
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -98,7 +101,7 @@ users.put(
         );
       }
       if (ci !== undefined) {
-        await User.findOneAndUpdate(
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -106,7 +109,7 @@ users.put(
         );
       }
       if (phoneNumber !== undefined) {
-        await User.findOneAndUpdate(
+        await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
@@ -114,15 +117,15 @@ users.put(
         );
       }
 
-      res.send(await User.findById(req.params.id));
+      res.send(await Worker.findById(req.params.id));
     } catch (error) {
       res.json({ message: error });
     }
   }
 );
 
-users.delete(
-  "/api/v1/users/:id",
+workers.delete(
+  "/api/v1/workers/:id",
   [param("id", "El id debe ser un string").exists().isString()],
   async (req, res) => {
     try {
@@ -130,7 +133,7 @@ users.delete(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const removedRequests = await User.deleteOne({
+      const removedRequests = await Worker.deleteOne({
         _id: req.params.id,
       });
       res.send(removedRequests);
@@ -140,4 +143,4 @@ users.delete(
   }
 );
 
-export default users;
+export default workers;

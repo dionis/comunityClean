@@ -1,11 +1,17 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, ObjectId } from "mongoose";
+import user from "./user";
 
 const requestSchema = new Schema(
   {
+    user: {
+      type: ObjectId,
+      ref: user,
+    },
     amountGarbage: {
       type: Number,
-      require: true,
     },
+    // Stat es si fue realizada o no, default en falso porque 
+    // no se ha cumplido la solicitud
     stat: {
       type: Boolean,
       default: false,
@@ -13,7 +19,6 @@ const requestSchema = new Schema(
     image_url: String,
     locations: {
       type: String,
-      require: true,
     },
   },
   {

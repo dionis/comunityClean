@@ -4,27 +4,21 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      require: true
     },
     last_name: {
       type: String,
-      require: true,
     },
     username: {
       type: String,
-      require: true,
     },
     password: {
       type: String,
-      require: true,
     },
     ci: {
-      type: String,
-      require: true,
+      type: String
     },
     phoneNumber: {
       type: Number,
-      require: true,
     },
   },
   {
@@ -33,6 +27,7 @@ const userSchema = new Schema(
   }
 );
 
+export {userSchema}
 export default model("User", userSchema);
 
 

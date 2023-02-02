@@ -3,17 +3,13 @@ import { Schema, model } from "mongoose";
 const groupSchema = new Schema(
   {
     gNumber: {
-      type: String,
-      require: true,
-      unique: true,
+      type: Number,
     },
     medium: {
       type: String,
-      require: true,
     },
     quantity: {
       type: Number,
-      require: true,
     },
   },
   {
