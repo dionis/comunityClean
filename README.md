@@ -3,23 +3,33 @@
 
 ## Estructura del Código
 La estructura de la API es la siguiente 
-    src-|
-        models-|
-            group.js
-            notification.js
-            request.js
-            user.js
+    
+    src-|        
+            models-|
+                admin.js
+                group.js
+                notification.js
+                request.js
+                stats.js
+                user.js
+                worker.js
          routes-|
-            group.routes.js   
-            index.routes.js   
-            notifications.routes.js   
-            request.routes.js   
-            user.routes.js   
+                admin.routes.js
+                group.routes.js   
+                index.routes.js   
+                notifications.routes.js   
+                request.routes.js
+                stats.routes.js
+                user.routes.js 
+                worker.routes.js
          validation-|
-            group.js
-            notification.js
-            request.js
-            user.js
+                admin.js
+                group.js
+                notification.js
+                request.js
+                stats.js
+                user.js
+                worker.js
          views-|
 
 * En la carpeta models están los modelos creados con mongoose para cada entidad que se  guardará en nuestra base de datos de mongodb
