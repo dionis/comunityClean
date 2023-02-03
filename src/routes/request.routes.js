@@ -35,6 +35,48 @@ cRequests.get("/api/v1/requests", async (req, res) => {
   }
 });
 
+cRequests.get("/api/v1/requests/done", async (req, res) => {
+  try {
+    const requests = await collectRequest.find({ stat: true });
+    res.send(requests);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
+cRequests.get("/api/v1/requests/pending", async (req, res) => {
+  try {
+    const requests = await collectRequest.find({ stat: false });
+    res.send(requests);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
+cRequests.get("/api/v1/requests/done/:id", async (req, res) => {
+  try {
+    const requests = await collectRequest.find({
+      user: req.params.id,
+      stat: true,
+    });
+    res.send(requests);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
+cRequests.get("/api/v1/requests/pending/:id", async (req, res) => {
+  try {
+    const requests = await collectRequest.find({
+      user: req.params.id,
+      stat: false,
+    });
+    res.send(requests);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
 cRequests.get(
   "/api/v1/requests/:id",
   [param("id", "El id debe ser un string").exists().isString()],

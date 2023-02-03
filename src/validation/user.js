@@ -1,5 +1,4 @@
 import admin from "../models/admin";
-import group from "../models/group";
 import user from "../models/user";
 
 const { body } = require("express-validator");
@@ -27,20 +26,6 @@ const userRule = [
     .custom(async (value) => {
       const checkUser = await user.findOne({ username: value });
       if (checkUser) {
-        return Promise.reject("Error");
-      }
-    })
-    .withMessage("Este usuario ya fue registrado")
-    .custom(async (value) => {
-      const checkUser = await group.findOne({ username: value });
-      if (checkUser != null) {
-        return Promise.reject("Error");
-      }
-    })
-    .withMessage("Este usuario ya fue registrado")
-    .custom(async (value) => {
-      const checkUser = await admin.findOne({ username: value });
-      if (checkUser != null) {
         return Promise.reject("Error");
       }
     })
@@ -95,4 +80,15 @@ const userRuleNotR = [
   body("phoneNumber").optional().isNumeric().withMessage("Debe ser un numero"),
 ];
 
-export { userRule, userRuleNotR };
+const loginRule = [
+  body("username")
+    .exists()
+    .withMessage("Escriba el nombre de usuario")
+    .isString("El nombre de usuario tiene que ser un string"),
+
+  body("password")
+    .exists()
+    .withMessage("Debe escribir una contraseña")
+];
+
+export { userRule, userRuleNotR, loginRule };
