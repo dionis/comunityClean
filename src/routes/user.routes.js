@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import User from "../models/user";
+import Worker from "../models/worker";
 import { userRule, userRuleNotR, loginRule } from "../validation/user";
 import bodyparser from "body-parser";
 const { validationResult, param } = require("express-validator");
@@ -24,7 +25,9 @@ users.post("/api/v1/users/register", userRule, async (req, res) => {
     const newUser = User(req.body);
     newUser.password = password;
     const userSaved = await newUser.save();
-    res.send({message: `El usuario ${userSaved.username} se ha registrado con éxito`});
+    res.send({
+      message: `El usuario ${userSaved.username} se ha registrado con éxito`,
+    });
   } catch (error) {
     res.json({ message: error });
   }
@@ -38,7 +41,9 @@ users.post("/api/v1/users/login", loginRule, async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const validUser = await User.findOne({ username: req.body.username });
+    const validUser =
+      (await User.findOne({ email: req.body.email })) ||
+      (await Worker.findOne({ email: req.body.email }));
     if (!validUser) {
       return res.status(400).json({ error: "El nombre de usuario no existe" });
     }
@@ -101,7 +106,7 @@ users.put(
         return res.status(400).json({ errors: errors.array() });
       }
 
-      const { name, lastName, username, password, ci, phoneNumber } = req.body;
+      const { name, lastName, email, password, ci, phoneNumber } = req.body;
 
       if (name !== undefined) {
         await User.findOneAndUpdate(
@@ -119,20 +124,15 @@ users.put(
           { lastName: lastName }
         );
       }
-      if (username !== undefined) {
-        await User.findOneAndUpdate(
-          {
-            _id: req.params.id,
-          },
-          { username: username }
-        );
-      }
       if (password !== undefined) {
+        const salt = await bcrypt.genSalt(10);
+        const pass = await bcrypt.hash(password, salt);
+
         await User.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { password: password }
+          { password: pass }
         );
       }
       if (ci !== undefined) {

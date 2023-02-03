@@ -8,6 +8,9 @@ const userSchema = new Schema(
     last_name: {
       type: String,
     },
+    email: {
+      type: String,
+    },
     username: {
       type: String,
     },
@@ -15,7 +18,7 @@ const userSchema = new Schema(
       type: String,
     },
     ci: {
-      type: String
+      type: String,
     },
     phoneNumber: {
       type: Number,
@@ -27,8 +30,5 @@ const userSchema = new Schema(
   }
 );
 
-export {userSchema}
+export { userSchema };
 export default model("User", userSchema);
-
-
-

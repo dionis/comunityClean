@@ -19,6 +19,28 @@ const requireVal = (path) => [
     .withMessage("Los apellidos deben ser en forma de texto")
     .isAlpha()
     .withMessage("Los apellidos solo deben contener letras"),
+  body(`${path}.email`)
+    .exists()
+    .withMessage("Debe escribir el email")
+    .isEmail()
+    .withMessage("El formato del email es incorrecto")
+    .custom(async (value) => {
+      let checkEmail = await user.findOne({ email: value });
+      if (checkEmail!=null) {
+        return Promise.reject("Error");
+      }
+
+      checkEmail = await worker.findOne({ "user.email": value });
+      if (checkEmail!=null) {
+        return Promise.reject("Error");
+      }
+
+      checkEmail = await admin.findOne({ "user.email": value });
+      if (checkEmail!=null) {
+        return Promise.reject("Error");
+      }
+    })
+    .withMessage("Este email ya fue registrado"),
   body(`${path}.username`)
     .exists()
     .withMessage("El nombre de usuario es requerido")
@@ -32,13 +54,12 @@ const requireVal = (path) => [
     })
     .withMessage("Este usuario ya fue registrado")
     .custom(async (value) => {
-      const checkUser = await worker.findOne({ username: value });
+      const checkUser = await worker.findOne({ "user.username": value });
       if (checkUser != null) {
         return Promise.reject("Error");
       }
     })
-    .withMessage("Este usuario ya fue registrado")
-    ,
+    .withMessage("Este trabajador ya fue registrado"),
   body(`${path}.password`)
     .exists()
     .withMessage("La contraseña es requerida")
@@ -68,24 +89,6 @@ const notRequireVal = (path) => [
     .withMessage("Los apellidos deben ser en forma de texto")
     .isAlpha()
     .withMessage("Los apellidos solo deben contener letras"),
-  body(`${path}.username`)
-    .optional()
-    .isString()
-    .withMessage("El nombre de usuario debe ser un String")
-    .custom(async (value) => {
-      const checkUser = await user.findOne({ username: value });
-      if (checkUser != null) {
-        return Promise.reject("Error");
-      }
-    })
-    .withMessage("Este usuario ya fue registrado")
-    .custom(async (value) => {
-      const checkUser = await worker.findOne({ username: value });
-      if (checkUser != null) {
-        return Promise.reject("Error");
-      }
-    }),
-
   body(`${path}.password`).optional().isString(),
   body(`${path}.ci`)
     .optional()

@@ -16,19 +16,24 @@ const requireVal = (path) => [
     .withMessage("Los apellidos deben ser en forma de texto")
     .isAlpha()
     .withMessage("Los apellidos solo deben contener letras"),
+  body(`${path}.email`)
+    .exists()
+    .withMessage("Debe escribir el email")
+    .isEmail()
+    .withMessage("El formato del email es incorrecto"),
   body(`${path}.username`)
     .exists()
     .withMessage("El nombre de usuario es requerido")
     .isString()
     .withMessage("El nombre de usuario debe ser un String")
-    .withMessage("Este usuario ya fue registrado")
     .custom(async (value) => {
-      const checkUser = await admin.findOne({ username: value });
+      const checkUser = await admin.findOne({ 'user.username': value });
       if (checkUser != null) {
         return Promise.reject("Error");
       }
     })
     .withMessage("Este usuario ya fue registrado"),
+
   body(`${path}.password`)
     .exists()
     .withMessage("La contraseña es requerida")
@@ -58,18 +63,6 @@ const notRequireVal = (path) => [
     .withMessage("Los apellidos deben ser en forma de texto")
     .isAlpha()
     .withMessage("Los apellidos solo deben contener letras"),
-  body(`${path}.username`)
-    .optional()
-    .isString()
-    .withMessage("El nombre de usuario debe ser un String")
-
-    .custom(async (value) => {
-      const checkUser = await admin.findOne({ username: value });
-      if (checkUser != null) {
-        return Promise.reject("Error");
-      }
-    })
-    .withMessage("Este usuario ya fue registrado"),
   body(`${path}.password`).optional().isString(),
   body(`${path}.ci`)
     .optional()

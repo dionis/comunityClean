@@ -2,19 +2,29 @@ import express, { Router } from "express";
 import Admin from "../models/admin";
 import { adminRule, adminRuleNotR } from "../validation/admin";
 const { validationResult, param } = require("express-validator");
+import bcrypt from "bcrypt";
+import bodyparser from "body-parser";
 
 const admins = Router();
 admins.use(express.json());
+admins.use(bodyparser.urlencoded({ extended: false }));
+admins.use(bodyparser.json());
 
-admins.post("/api/v1/admins", adminRule, async (req, res) => {
+admins.post("/api/v1/admins/register", adminRule, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash(req.body.user.password, salt);
+
     const newAdmin = Admin(req.body);
+    newAdmin.user.password = password;
     const adminSaved = await newAdmin.save();
-    res.send(adminSaved);
+    res.send({
+      message: `El usuario ${adminSaved.user.username} se ha registrado con éxito`,
+    });
   } catch (error) {
     res.json({ message: error });
   }
@@ -79,14 +89,7 @@ admins.put(
           { "user.lastName": user.lastName }
         );
       }
-      if (user.username !== undefined) {
-        await Admin.findOneAndUpdate(
-          {
-            _id: req.params.id,
-          },
-          { "user.username": user.username }
-        );
-      }
+
       if (user.password !== undefined) {
         await Admin.findOneAndUpdate(
           {
