@@ -160,6 +160,7 @@ Content-Type: application/json
 {
   "name": ,
   "lastName": ,
+  "email": ,
   "username": ,
   "password": ,
   "ci": ,
@@ -197,6 +198,7 @@ Cotent-Type: application/json
 		"name": "Claudia",
 		"last_name" : "Queipo",
 		"username": "qwerty",
+    "email": ,
 		"password": "ekisde",
 		"ci": "02060561797" ,
 		"phoneNumber": 55326313

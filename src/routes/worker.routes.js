@@ -1,23 +1,34 @@
 import express, { Router } from "express";
-import group from "../models/group";
-import user, { userSchema } from "../models/user";
 import Worker from "../models/worker";
+import bcrypt from "bcrypt";
+import bodyparser from "body-parser";
+
 import { workerRule, workerRuleNotR } from "../validation/worker";
 const { validationResult, param } = require("express-validator");
 
 const workers = Router();
 workers.use(express.json());
+workers.use(bodyparser.urlencoded({ extended: false }));
+workers.use(bodyparser.json());
 
-workers.post("/api/v1/workers", workerRule, async (req, res) => {
+workers.post("/api/v1/workers/register", workerRule, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash(req.body.user.password, salt);
+
     const newWorker = Worker(req.body);
+    newWorker.user.password = password;
     const workerSaved = await newWorker.save();
-    res.send(workerSaved);
+
+    res.send({
+      message: `El usuario ${workerSaved.user.username} se ha registrado con éxito`,
+    });
   } catch (error) {
+    console.log(error);
     res.json({ message: error });
   }
 });
@@ -25,8 +36,6 @@ workers.post("/api/v1/workers", workerRule, async (req, res) => {
 workers.get("/api/v1/workers", async (req, res) => {
   try {
     const worker = await Worker.find();
-    const test = await group.findOne({gNumber:4})
-    console.log(test);
 
     res.send(worker);
   } catch (error) {
@@ -46,12 +55,7 @@ workers.get(
       const worker = await Worker.findById(req.params.id);
       res.send(worker);
     } catch (error) {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      } else {
-        res.json({ message: error });
-      }
+      res.json({ message: error });
     }
   }
 );
@@ -67,53 +71,47 @@ workers.put(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const { user, isBoss, gNumber } = req.body
+      const { user, isBoss, gNumber } = req.body;
       if (user.name !== undefined) {
         await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { name: user.name }
+          { "user.name": user.name }
         );
       }
-      if (lastName !== undefined) {
+      if (user.lastName !== undefined) {
         await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { lastName: lastName }
+          { "user.lastName": lastName }
         );
       }
-      if (username !== undefined) {
+      if (user.password !== undefined) {
+        const salt = await bcrypt.genSalt(10);
+        const pass = await bcrypt.hash(password, salt);
         await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { username: username }
+          { "user.password": pass }
         );
       }
-      if (password !== undefined) {
+      if (user.ci !== undefined) {
         await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { password: password }
+          { "user.ci": ci }
         );
       }
-      if (ci !== undefined) {
+      if (user.phoneNumber !== undefined) {
         await Worker.findOneAndUpdate(
           {
             _id: req.params.id,
           },
-          { ci: ci }
-        );
-      }
-      if (phoneNumber !== undefined) {
-        await Worker.findOneAndUpdate(
-          {
-            _id: req.params.id,
-          },
-          { phoneNumber: phoneNumber }
+          { "user.phoneNumber": phoneNumber }
         );
       }
 

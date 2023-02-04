@@ -1,19 +1,22 @@
 import { Schema, model, index } from "mongoose";
 import { userSchema } from "./user";
 const workerSchema = new Schema(
-    {
-        user: userSchema,
-        isBoss: {
-            type: Boolean,
-        },
-        gNumber: {
-            type: Number
-        },
+  {
+    user: {
+      type: userSchema,
+      ref: "users",
     },
-    {
-        timestamps: true,
-        versionKey: false,
-    }
+    isBoss: {
+      type: Boolean,
+    },
+    gNumber: {
+      type: Number,
+    },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  }
 );
 
 export default model("Worker", workerSchema);
