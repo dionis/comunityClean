@@ -1,8 +1,10 @@
 import express, { Router } from "express";
-import collectRequest from "../models/request";
+// import prisma.request from "../models/request";
 import { requestRule, requestRuleNotR } from "../validation/requests";
 const { validationResult, param } = require("express-validator");
+import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
 const cRequests = Router();
 cRequests.use(express.json());
 
@@ -12,15 +14,20 @@ cRequests.post("/api/v1/requests", requestRule, async (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const collectionRequest = collectRequest(req.body);
-    const requestSaved = await collectionRequest.save();
 
-    res.send({
-      amountGarbage: requestSaved.amountGarbage,
-      stat: requestSaved.stat,
-      image_url: requestSaved.image_url,
-      locations: requestSaved.locations,
+    const { userId, amountGarbage, stat, image_url, locations } = req.body;
+
+    const savedRequest = await prisma.request.create({
+      data: {
+        userId,
+        amountGarbage,
+        stat,
+        image_url,
+        locations,
+      },
     });
+
+    res.send(savedRequest);
   } catch (error) {
     res.json({ message: error });
   }
@@ -28,10 +35,9 @@ cRequests.post("/api/v1/requests", requestRule, async (req, res) => {
 
 cRequests.get("/api/v1/requests/:id", async (req, res) => {
   try {
-    const requests = await collectRequest.find({
-      "user": req.params.id
+    const requests = await prisma.request.findMany({
+      where: { id: Number(req.params.id) },
     });
-
     res.json(requests);
   } catch (error) {
     console.log(error);
@@ -41,7 +47,9 @@ cRequests.get("/api/v1/requests/:id", async (req, res) => {
 
 cRequests.get("/api/v1/requests/done", async (req, res) => {
   try {
-    const requests = await collectRequest.find({ stat: true });
+    const requests = await prisma.request.findMany({
+      where: { stat: Boolean(true) },
+    });
     res.send(requests);
   } catch (error) {
     res.json({ message: error });
@@ -50,7 +58,9 @@ cRequests.get("/api/v1/requests/done", async (req, res) => {
 
 cRequests.get("/api/v1/requests/pending", async (req, res) => {
   try {
-    const requests = await collectRequest.find({ stat: false });
+    const requests = await prisma.request.findMany({
+      where: { stat: Boolean(false) },
+    });
     res.send(requests);
   } catch (error) {
     res.json({ message: error });
@@ -59,9 +69,8 @@ cRequests.get("/api/v1/requests/pending", async (req, res) => {
 
 cRequests.get("/api/v1/requests/done/:id", async (req, res) => {
   try {
-    const requests = await collectRequest.find({
-      user: req.params.id,
-      stat: true,
+    const requests = await prisma.request.findMany({
+      where: { user: req.params.id, stat: Boolean(true) },
     });
     res.send(requests);
   } catch (error) {
@@ -71,9 +80,11 @@ cRequests.get("/api/v1/requests/done/:id", async (req, res) => {
 
 cRequests.get("/api/v1/requests/pending/:id", async (req, res) => {
   try {
-    const requests = await collectRequest.find({
-      user: req.params.id,
-      stat: false,
+    const requests = await prisma.request.findOne({
+      where: {
+        user: req.params.id,
+        stat: false,
+      },
     });
     res.send(requests);
   } catch (error) {
@@ -90,7 +101,9 @@ cRequests.get(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-      const requests = await collectRequest.findById(req.params.id);
+      const requests = await prisma.request.findOne({
+        where: { id: req.params.id },
+      });
       res.send(requests);
     } catch (error) {
       const errors = validationResult(req);
@@ -102,52 +115,47 @@ cRequests.get(
 
 cRequests.put(
   "/api/v1/requests/:id",
-  [param("id", "El id debe ser un string").exists().isString()].concat(
-    requestRuleNotR
-  ),
+  [param("id", "El id debe ser un string").exists().isNumeric()],
   async (req, res) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       }
-
+      const id = parseInt(req.params.id);
       const { amountGarbage, stat, image_url, locations } = req.body;
       if (amountGarbage !== undefined) {
-        await collectRequest.findOneAndUpdate(
-          {
-            _id: req.params.id,
-          },
-          { amountGarbage: amountGarbage }
-        );
+        await prisma.request.update({
+          where: { id },
+          data: { amountGarbage: amountGarbage },
+        });
       }
       if (stat !== undefined) {
-        await collectRequest.findOneAndUpdate(
-          {
-            _id: req.params.id,
-          },
-          { stat: stat }
-        );
+        await prisma.request.update({
+          where: { id },
+          data: { stat: stat },
+        });
       }
       if (image_url !== undefined) {
-        await collectRequest.findOneAndUpdate(
-          {
-            _id: req.params.id,
-          },
-          { image_url: image_url }
-        );
+        await prisma.request.update({
+          where: { id },
+          data: { image_url: image_url },
+        });
       }
       if (locations !== undefined) {
-        await collectRequest.findOneAndUpdate(
-          {
-            _id: req.params.id,
-          },
-          { locations: locations }
-        );
+        await prisma.request.update({
+          where: { id },
+          data: { locations: locations },
+        });
       }
 
-      res.send(await collectRequest.findById(req.params.id));
+      res.send(
+        await prisma.request.findMany({
+          where: { id },
+        })
+      );
     } catch (error) {
+      console.log(error);
       res.json({ message: error });
     }
   }
@@ -155,14 +163,16 @@ cRequests.put(
 
 cRequests.delete(
   "/api/v1/requests/:id",
-  [param("id", "El id debe ser un string").exists().isString()],
+  [param("id", "El id debe ser un string").exists().isNumeric()],
   async (req, res) => {
     try {
-      const removedRequests = await collectRequest.deleteOne({
-        _id: req.params.id,
+      const id = parseInt(req.params.id)
+      const removedRequests = await prisma.request.delete({
+        where: {id}
       });
       res.send(removedRequests);
     } catch (error) {
+      console.log(error);
       res.send({ message: "Invalid Id" });
     }
   }
