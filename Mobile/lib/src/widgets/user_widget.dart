@@ -1,3 +1,4 @@
+import 'package:city_clean/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class UserWidget extends StatelessWidget {
@@ -7,25 +8,28 @@ class UserWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const Align(
+        Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: EdgeInsets.all(30.0),
+              padding: const EdgeInsets.all(30.0),
               child: Text(
-                'Bienvenido Wachu985',
-                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                S.of(context).tWelcome('Wachu985'),
+                style:
+                    const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
               ),
             )),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
-            EditWidget(text: 'Nombre de Usuario: ', subtitle: 'Wachu985'),
-            Divider(),
-            EditWidget(text: 'Email: ', subtitle: 'pedrobonilla985@gmail.com'),
-            Divider(),
-            EditWidget(text: 'Contraseña: ', subtitle: '********'),
-            Divider(),
+          children: [
+            EditWidget(text: S.of(context).tNombre, subtitle: 'Wachu985'),
+            const Divider(),
+            EditWidget(
+                text: S.of(context).tEmail,
+                subtitle: 'pedrobonilla985@gmail.com'),
+            const Divider(),
+            EditWidget(text: S.of(context).tContra, subtitle: '********'),
+            const Divider(),
           ],
         ),
       ],

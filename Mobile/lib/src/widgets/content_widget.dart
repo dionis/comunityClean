@@ -1,3 +1,4 @@
+import 'package:city_clean/generated/l10n.dart';
 import 'package:city_clean/src/widgets/completados_widget.dart';
 import 'package:city_clean/src/widgets/pendientes_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,20 +13,20 @@ class ContentWidget extends StatelessWidget {
     return DefaultTabController(
         length: 2,
         child: Column(
-          children: const [
+          children: [
             TabBar(
               labelColor: ColorsConstants.colorPrimary,
               indicatorColor: ColorsConstants.colorPrimary,
               tabs: [
                 Tab(
-                  text: 'Pendientes',
+                  text: S.of(context).tPendientes,
                 ),
                 Tab(
-                  text: 'Completados',
+                  text: S.of(context).tCompletados,
                 )
               ],
             ),
-            Expanded(
+            const Expanded(
                 child: TabBarView(
                     children: [PendientesWidget(), CompletadosWidget()]))
           ],

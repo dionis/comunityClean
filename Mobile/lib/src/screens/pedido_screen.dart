@@ -1,3 +1,4 @@
+import 'package:city_clean/generated/l10n.dart';
 import 'package:city_clean/src/blocs/app/app_bloc.dart';
 import 'package:city_clean/src/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class PedidoScreen extends StatelessWidget {
             },
             icon: const Icon(Icons.arrow_back_ios_new_rounded)),
         centerTitle: true,
-        title: const Text('Solicite su Servicio'),
+        title: Text(S.of(context).tServicio),
         backgroundColor: ColorsConstants.colorPrimary,
       ),
       body: Stack(

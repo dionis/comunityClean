@@ -1,3 +1,4 @@
+import 'package:city_clean/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,10 +20,11 @@ class FotoWidget extends StatelessWidget {
         return SingleChildScrollView(
           child: Column(
             children: [
-              const Text(
-                'Imagen de Referencia',
+              Text(
+                S.of(context).tImagenR,
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -78,9 +80,10 @@ class FotoWidget extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20)),
                           fixedSize: Size(
                               MediaQuery.of(context).size.width * 0.45, 50)),
-                      child: const Text(
-                        'Atras',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      child: Text(
+                        S.of(context).tAtras,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 15),
                       ),
                     ),
                     const Spacer(),
@@ -96,9 +99,10 @@ class FotoWidget extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20)),
                           fixedSize: Size(
                               MediaQuery.of(context).size.width * 0.45, 50)),
-                      child: const Text(
-                        'Finalizar',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      child: Text(
+                        S.of(context).tFinalizar,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 15),
                       ),
                     ),
                     const Spacer(),

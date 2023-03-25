@@ -34,9 +34,11 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
+  flutter_localization: ^0.1.10
   google_fonts: ^4.0.3
   im_stepper: ^1.0.1+1
   image_picker: ^0.8.7
+  intl: ^0.17.0
   responsive_framework: ^0.2.0
 
 dev_dependencies:
@@ -80,3 +82,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_intl:
+  enabled: true
+  class_name: S
+  main_locale: en,es

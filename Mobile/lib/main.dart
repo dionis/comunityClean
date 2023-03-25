@@ -3,6 +3,8 @@ import 'package:city_clean/src/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'generated/l10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() => runApp(const MyApp());
 
@@ -25,6 +27,13 @@ class MyApp extends StatelessWidget {
               ],
               background: Container(color: const Color(0xFFF5F5F5))),
           title: 'Material App',
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
           debugShowCheckedModeBanner: false,
           home: const SafeArea(child: HomeScreen())),
     );

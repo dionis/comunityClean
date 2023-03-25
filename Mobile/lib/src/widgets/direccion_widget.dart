@@ -1,3 +1,4 @@
+import 'package:city_clean/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,10 +32,11 @@ class _DireccionWidgetState extends State<DireccionWidget>
             key: formKey,
             child: Column(
               children: [
-                const Text(
-                  'Dirección',
+                Text(
+                  S.of(context).tDireccion,
                   textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -43,7 +45,7 @@ class _DireccionWidgetState extends State<DireccionWidget>
                       validator: validateValues,
                       onSaved: (newValue) => direccion = newValue,
                       decoration: InputDecoration(
-                          label: const Text('Dirección'),
+                          label: Text(S.of(context).tDireccion),
                           prefixIcon: const Icon(Icons.add_location_rounded),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20)))),
@@ -55,7 +57,7 @@ class _DireccionWidgetState extends State<DireccionWidget>
                       validator: validateValues,
                       onSaved: (newValue) => calles = newValue,
                       decoration: InputDecoration(
-                          label: const Text('Entre Calles'),
+                          label: Text(S.of(context).tEntreCalles),
                           prefixIcon: const Icon(Icons.alt_route_rounded),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20)))),
@@ -67,7 +69,7 @@ class _DireccionWidgetState extends State<DireccionWidget>
                       validator: validateValues,
                       onSaved: (newValue) => provincia = newValue,
                       decoration: InputDecoration(
-                          label: const Text('Provincia'),
+                          label: Text(S.of(context).tProvincia),
                           prefixIcon: const Icon(Icons.local_parking_rounded),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20)))),
@@ -79,7 +81,7 @@ class _DireccionWidgetState extends State<DireccionWidget>
                       validator: validateValues,
                       onSaved: (newValue) => municipio = newValue,
                       decoration: InputDecoration(
-                          label: const Text('Municipio'),
+                          label: Text(S.of(context).tMunicipio),
                           prefixIcon: const Icon(Icons.location_city),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20)))),
@@ -107,9 +109,9 @@ class _DireccionWidgetState extends State<DireccionWidget>
                             borderRadius: BorderRadius.circular(20)),
                         fixedSize:
                             Size(MediaQuery.of(context).size.width * 0.6, 50)),
-                    child: const Text(
-                      'Siguiente',
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    child: Text(
+                      S.of(context).tSiguiente,
+                      style: const TextStyle(color: Colors.white, fontSize: 15),
                     ),
                   ),
                 ),
@@ -123,7 +125,7 @@ class _DireccionWidgetState extends State<DireccionWidget>
 
   String? validateValues(String? value) {
     if (value!.isEmpty) {
-      return 'El Campo no debe estar Vacio';
+      return S.of(context).tValidateV;
     }
     return null;
   }

@@ -1,3 +1,4 @@
+import 'package:city_clean/generated/l10n.dart';
 import 'package:city_clean/src/blocs/app/app_bloc.dart';
 import 'package:city_clean/src/screens/pedido_screen.dart';
 import 'package:city_clean/src/utils/colors.dart';
@@ -49,10 +50,12 @@ class HomeScreen extends StatelessWidget {
         bottomNavigationBar: BottomNavigationBar(
             elevation: 10,
             selectedItemColor: ColorsConstants.colorPrimary,
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            items: [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.person_pin), label: 'User')
+                  icon: const Icon(Icons.home), label: S.of(context).tHome),
+              BottomNavigationBarItem(
+                  icon: const Icon(Icons.person_pin),
+                  label: S.of(context).tUser)
             ],
             currentIndex: state.index,
             onTap: (index) => BlocProvider.of<AppBloc>(context)

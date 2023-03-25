@@ -1,3 +1,4 @@
+import 'package:city_clean/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:im_stepper/stepper.dart';
@@ -21,9 +22,9 @@ class DotsWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(state.dotsIndex == 0 ? 'Dirección' : ''),
-                  Text(state.dotsIndex == 1 ? 'Metros de basura' : ''),
-                  Text(state.dotsIndex == 2 ? 'Imagen' : '')
+                  Text(state.dotsIndex == 0 ? S.of(context).tDireccion : ''),
+                  Text(state.dotsIndex == 1 ? S.of(context).tMetrosBasura : ''),
+                  Text(state.dotsIndex == 2 ? S.of(context).tImagen : '')
                 ],
               ),
               const SizedBox(height: 10),
