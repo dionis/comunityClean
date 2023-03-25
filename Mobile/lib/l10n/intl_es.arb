@@ -1,0 +1,33 @@
+{
+    "tCompletos1":"Presione el botón (+)",
+    "tCompletos2": " y pida su primer servicio.",
+
+    "tPendientes": "Pendientes",
+    "tCompletados":"Completados",
+    
+    "tDireccion": "Dirección",
+    "tEntreCalles": "Entre Calles",
+    "tProvincia": "Provincia",
+    "tMunicipio": "Municipio",
+    "tValidateV": "El Campo no debe estar Vacio",
+
+    "tMetrosBasura": "Metros de basura",
+    "tImagen": "Imagen",
+
+    "tImagenR": "Imagen de Referencia",
+    "tAtras": "Atras",
+    "tFinalizar": "Finalizar",
+    "tSiguiente": "Siguiente",
+
+    "tMetrosBasuraC": "Metros Cúbicos de Basura",
+    "tValidateIValid": "El Valor debe ser un Numero Valido",
+
+    "tWelcome": "Bienvenido {name}",
+    "tNombre":"Nombre de Usuario: ",
+    "tEmail":"Email: ",
+    "tContra": "Contraseña: ",
+
+    "tServicio": "Solicite su Servicio",
+    "tHome": "Inicio",
+    "tUser": "Usuario"
+}
