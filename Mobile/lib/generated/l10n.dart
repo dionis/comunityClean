@@ -289,6 +289,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Submitting Request Please Wait...`
+  String get tSubiendo {
+    return Intl.message(
+      'Submitting Request Please Wait...',
+      name: 'tSubiendo',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

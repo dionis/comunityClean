@@ -50,6 +50,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tServicio":
             MessageLookupByLibrary.simpleMessage("Solicite su Servicio"),
         "tSiguiente": MessageLookupByLibrary.simpleMessage("Siguiente"),
+        "tSubiendo": MessageLookupByLibrary.simpleMessage(
+            "Subiendo Solicitud Por Favor Espere..."),
         "tUser": MessageLookupByLibrary.simpleMessage("Usuario"),
         "tValidateIValid": MessageLookupByLibrary.simpleMessage(
             "El Valor debe ser un Numero Valido"),

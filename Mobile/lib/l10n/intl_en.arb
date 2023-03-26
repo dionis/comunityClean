@@ -1,33 +1,27 @@
 {
-    "tCompletos1": "Press the button (+)",
-    "tCompletos2": " and request your first service.",
-
-    "tPendientes": "Pending",
-    "tCompletados": "Completed",
-
-    "tDireccion": "Address",
-    "tEntreCalles": "Between Streets",
-    "tProvincia": "Province",
-    "tMunicipio": "Municipality",
-    "tValidateV": "The field must not be empty",
-
-    "tMetrosBasura": "Meters of garbage",
-    "tImagen": "Image",
-
-    "tImagenR": "Reference Image",
-    "tAtras": "Back",
-    "tFinalizar": "Finish",
-    "tSiguiente": "Next",
-
-    "tMetrosBasuraC": "Cubic Meters of Garbage",
-    "tValidateIValid": "The value must be a valid number",
-
-    "tWelcome": "Welcome {name}",
-    "tNombre": "Username: ",
-    "tEmail": "Email: ",
-    "tContra": "Password: ",
-
-    "tServicio": "Request your Service",
-    "tHome": "Home",
-    "tUser": "User"
+  "tCompletos1": "Press the button (+)",
+  "tCompletos2": " and request your first service.",
+  "tPendientes": "Pending",
+  "tCompletados": "Completed",
+  "tDireccion": "Address",
+  "tEntreCalles": "Between Streets",
+  "tProvincia": "Province",
+  "tMunicipio": "Municipality",
+  "tValidateV": "The field must not be empty",
+  "tMetrosBasura": "Meters of garbage",
+  "tImagen": "Image",
+  "tImagenR": "Reference Image",
+  "tAtras": "Back",
+  "tFinalizar": "Finish",
+  "tSiguiente": "Next",
+  "tMetrosBasuraC": "Cubic Meters of Garbage",
+  "tValidateIValid": "The value must be a valid number",
+  "tWelcome": "Welcome {name}",
+  "tNombre": "Username: ",
+  "tEmail": "Email: ",
+  "tContra": "Password: ",
+  "tServicio": "Request your Service",
+  "tHome": "Home",
+  "tUser": "User",
+  "tSubiendo": "Submitting Request Please Wait..."
 }
