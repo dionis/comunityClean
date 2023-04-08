@@ -13,7 +13,9 @@ class ClientState extends Equatable {
       this.newGarbage = const {},
       this.error = '',
       this.dotsIndex = 0,
-      this.index = 0});
+      this.index = 0,
+      this.position,
+      this.editGarbage});
 
   final GarbageStatus garbageStatus;
   final GarbageSubmit garbageSubmit;
@@ -23,8 +25,11 @@ class ClientState extends Equatable {
   final Map<String, dynamic> newGarbage;
   final int index;
   final String error;
+  final LatLng? position;
+  final GarbageModel? editGarbage;
 
-  factory ClientState.initialState() => const ClientState();
+  factory ClientState.initialState() =>
+      ClientState(position: LatLng(20.02163, -75.82966));
 
   ClientState copyWith(
           {GarbageStatus? garbageStatus,
@@ -34,7 +39,9 @@ class ClientState extends Equatable {
           int? dotsIndex,
           String? error,
           Map<String, dynamic>? newGarbage,
-          int? index}) =>
+          int? index,
+          LatLng? position,
+          GarbageModel? editGarbage}) =>
       ClientState(
           error: error ?? this.error,
           dotsIndex: dotsIndex ?? this.dotsIndex,
@@ -43,7 +50,9 @@ class ClientState extends Equatable {
           listCompletos: listCompletos ?? this.listCompletos,
           listPendientes: listPendientes ?? this.listPendientes,
           garbageStatus: garbageStatus ?? this.garbageStatus,
-          index: index ?? this.index);
+          index: index ?? this.index,
+          position: position ?? this.position,
+          editGarbage: editGarbage ?? this.editGarbage);
 
   @override
   List<Object> get props => [
@@ -53,8 +62,15 @@ class ClientState extends Equatable {
         index,
         error,
         newGarbage,
-        garbageSubmit
+        garbageSubmit,
+        position ?? LatLng(20.02163, -75.82966),
+        editGarbage ??
+            GarbageModel(
+                amountGarbage: 0,
+                id: '',
+                imageUrl: '',
+                locations: '',
+                stat: false,
+                user: '')
       ];
 }
-
-// class ClientInitial extends ClientState {}

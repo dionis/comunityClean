@@ -32,4 +32,25 @@ class ClientGarbageRepositoryImpl implements ClientGarbageRepository {
       return Left(ConexionFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> deleteGarbageRequest(String id) async {
+    try {
+      final data = await _datasource.deleteGarbageRequest(id);
+      return Right(data);
+    } on ConexionException {
+      return Left(ConexionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, GarbageModel>> updateGarbageRequest(
+      GarbageModel newGarbage) async {
+    try {
+      final data = await _datasource.updateGarbageRequest(newGarbage);
+      return Right(data);
+    } on ConexionException {
+      return Left(ConexionFailure());
+    }
+  }
 }

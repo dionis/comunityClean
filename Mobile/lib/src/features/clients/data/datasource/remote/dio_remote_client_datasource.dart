@@ -42,4 +42,31 @@ class DioRemoteClientDatasource implements RemoteClientDatasource {
       throw ConexionException();
     }
   }
+
+  @override
+  Future<bool> deleteGarbageRequest(String id) async {
+    try {
+      final results = await _client.delete('$_url$id');
+      if (results.statusCode == 200) {
+        return true;
+      }
+      throw ConexionException();
+    } catch (e) {
+      throw ConexionException();
+    }
+  }
+
+  @override
+  Future<GarbageModel> updateGarbageRequest(GarbageModel newGarbage) async {
+    try {
+      final results =
+          await _client.put('$_url${newGarbage.id}', data: newGarbage.toJson());
+      if (results.statusCode == 200) {
+        return GarbageModel.fromJson(results.data);
+      }
+      throw ConexionException();
+    } catch (e) {
+      throw ConexionException();
+    }
+  }
 }

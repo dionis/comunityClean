@@ -1,4 +1,6 @@
 import 'package:city_clean/generated/l10n.dart';
+import 'package:city_clean/src/features/clients/presentation/screens/map_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +26,20 @@ class _DireccionWidgetState extends State<DireccionWidget>
     String? direccion, provincia, calles, municipio;
     return BlocBuilder<ClientBloc, ClientState>(
       builder: (context, state) {
+        if (state.editGarbage != null &&
+            state.editGarbage!.locations.isNotEmpty) {
+          final text = state.editGarbage!.locations;
+          try {
+            direccion = text.split('Entre').first;
+            calles = text.split('Entre')[1].split(',').first;
+            provincia = text.split('Entre')[1].split(',')[1];
+            municipio = text.split('Entre')[1].split(',').last;
+          } catch (e) {
+            //
+          }
+        }
         return SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Form(
             key: formKey,
             child: Column(
@@ -83,8 +98,28 @@ class _DireccionWidgetState extends State<DireccionWidget>
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20)))),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: TextButton(
+                    onPressed: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const MapScreen(),
+                        )),
+                    style: TextButton.styleFrom(
+                        backgroundColor: ThemeWidget.colorPrimary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        fixedSize:
+                            Size(MediaQuery.of(context).size.width * 0.6, 50)),
+                    child: Text(
+                      S.of(context).tUbicar,
+                      style: const TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  ),
+                ),
                 const SizedBox(
-                  height: 100,
+                  height: 40,
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
@@ -92,7 +127,8 @@ class _DireccionWidgetState extends State<DireccionWidget>
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         formKey.currentState!.save();
-                        final sub = '$direccion $provincia $calles $municipio';
+                        final sub =
+                            '$direccion Entre $calles, $provincia, $municipio';
                         BlocProvider.of<ClientBloc>(context).add(
                             ClientEvent.updateNewGarbage(
                                 key: 'locations', value: sub));

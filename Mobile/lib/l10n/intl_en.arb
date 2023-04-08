@@ -23,5 +23,13 @@
   "tServicio": "Request your Service",
   "tHome": "Home",
   "tUser": "User",
-  "tSubiendo": "Submitting Request Please Wait..."
+  "tSubiendo": "Submitting Request Please Wait...",
+  "tCantBasura": "Amount of Garbage",
+  "tPregunta": "Are you sure you want to delete this contract?",
+  "tConfirmacion": "Confirmation",
+  "tCancelar": "Cancel",
+  "tAceptar": "Accept",
+  "tUbicar": "Locate on the Map",
+  "tSavePosition": "Save Position",
+  "tEntre": "Between"
 }

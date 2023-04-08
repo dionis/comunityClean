@@ -20,6 +20,14 @@ abstract class ClientEvent {
   factory ClientEvent.updateNewGarbage(
           {required String key, required dynamic value}) =>
       _UpdateNewGarbage(key: key, value: value);
+  factory ClientEvent.deleteGarbageRequest({required String id}) =>
+      _DeleteGarbage(id: id);
+  factory ClientEvent.updatePosition({required LatLng newPosition}) =>
+      _UpdatePosition(newPosition: newPosition);
+  factory ClientEvent.updateGarbage({required GarbageModel? newGarbage}) =>
+      _UpdateGarbage(newGarbage: newGarbage);
+  factory ClientEvent.updateRequest({required GarbageModel newGarbage}) =>
+      _UpdateRequest(newGarbage: newGarbage);
 }
 
 class _ChangeDotsEvent implements ClientEvent {
@@ -57,4 +65,24 @@ class _SubmitNewGarbage implements ClientEvent {
 
 class _ResetNewGarbage implements ClientEvent {
   const _ResetNewGarbage();
+}
+
+class _DeleteGarbage implements ClientEvent {
+  const _DeleteGarbage({required this.id});
+  final String id;
+}
+
+class _UpdatePosition implements ClientEvent {
+  _UpdatePosition({required this.newPosition});
+  final LatLng newPosition;
+}
+
+class _UpdateGarbage implements ClientEvent {
+  _UpdateGarbage({required this.newGarbage});
+  final GarbageModel? newGarbage;
+}
+
+class _UpdateRequest implements ClientEvent {
+  _UpdateRequest({required this.newGarbage});
+  final GarbageModel newGarbage;
 }

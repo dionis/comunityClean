@@ -23,5 +23,13 @@
   "tServicio": "Solicite su Servicio",
   "tHome": "Inicio",
   "tUser": "Usuario",
-  "tSubiendo": "Subiendo Solicitud Por Favor Espere..."
+  "tSubiendo": "Subiendo Solicitud Por Favor Espere...",
+  "tCantBasura": "Cantidad de Basura",
+  "tPregunta": "¿Está Seguro de Eliminar este Contrato?",
+  "tConfirmacion": "Confirmación",
+  "tCancelar": "Cancelar",
+  "tAceptar": "Aceptar",
+  "tUbicar": "Ubicar en el Mapa",
+  "tSavePosition": "Guardar Posición",
+  "tEntre": "Entre"
 }

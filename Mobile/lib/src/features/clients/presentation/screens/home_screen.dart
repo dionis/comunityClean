@@ -1,5 +1,6 @@
 import 'package:city_clean/generated/l10n.dart';
 import 'package:city_clean/src/core/theme/theme.dart';
+import 'package:city_clean/src/features/clients/data/models/garbage_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,6 +40,14 @@ class HomeScreen extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           heroTag: 'locura',
           onPressed: () {
+            BlocProvider.of<ClientBloc>(context).add(ClientEvent.updateGarbage(
+                newGarbage: GarbageModel(
+                    amountGarbage: 0,
+                    id: '',
+                    imageUrl: '',
+                    locations: '',
+                    stat: false,
+                    user: '')));
             Navigator.push(
                 context,
                 CupertinoPageRoute(
@@ -65,9 +74,8 @@ class HomeScreen extends StatelessWidget {
                   .add(ClientEvent.changeIndexEvent(index: index));
               pageController.animateToPage(index,
                   duration: const Duration(milliseconds: 500),
-                  curve: Curves.linear);
+                  curve: Curves.ease);
             }),
-        // body: state.index == 0 ? const ContentWidget() : const UserWidget(),
         body: PageView(
           controller: pageController,
           physics: const NeverScrollableScrollPhysics(),

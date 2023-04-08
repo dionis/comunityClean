@@ -27,7 +27,9 @@ class _MetrosWidgetState extends State<MetrosWidget>
     String? metros;
     return BlocBuilder<ClientBloc, ClientState>(
       builder: (context, state) {
+        metros = state.editGarbage?.amountGarbage.toString();
         return SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Form(
             key: formKey,
             child: Column(

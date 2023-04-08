@@ -24,15 +24,21 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "tAceptar": MessageLookupByLibrary.simpleMessage("Accept"),
         "tAtras": MessageLookupByLibrary.simpleMessage("Back"),
+        "tCancelar": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "tCantBasura":
+            MessageLookupByLibrary.simpleMessage("Amount of Garbage"),
         "tCompletados": MessageLookupByLibrary.simpleMessage("Completed"),
         "tCompletos1":
             MessageLookupByLibrary.simpleMessage("Press the button (+)"),
         "tCompletos2": MessageLookupByLibrary.simpleMessage(
             " and request your first service."),
+        "tConfirmacion": MessageLookupByLibrary.simpleMessage("Confirmation"),
         "tContra": MessageLookupByLibrary.simpleMessage("Password: "),
         "tDireccion": MessageLookupByLibrary.simpleMessage("Address"),
         "tEmail": MessageLookupByLibrary.simpleMessage("Email: "),
+        "tEntre": MessageLookupByLibrary.simpleMessage("Between"),
         "tEntreCalles": MessageLookupByLibrary.simpleMessage("Between Streets"),
         "tFinalizar": MessageLookupByLibrary.simpleMessage("Finish"),
         "tHome": MessageLookupByLibrary.simpleMessage("Home"),
@@ -45,12 +51,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "tMunicipio": MessageLookupByLibrary.simpleMessage("Municipality"),
         "tNombre": MessageLookupByLibrary.simpleMessage("Username: "),
         "tPendientes": MessageLookupByLibrary.simpleMessage("Pending"),
+        "tPregunta": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to delete this contract?"),
         "tProvincia": MessageLookupByLibrary.simpleMessage("Province"),
+        "tSavePosition": MessageLookupByLibrary.simpleMessage("Save Position"),
         "tServicio":
             MessageLookupByLibrary.simpleMessage("Request your Service"),
         "tSiguiente": MessageLookupByLibrary.simpleMessage("Next"),
         "tSubiendo": MessageLookupByLibrary.simpleMessage(
             "Submitting Request Please Wait..."),
+        "tUbicar": MessageLookupByLibrary.simpleMessage("Locate on the Map"),
         "tUser": MessageLookupByLibrary.simpleMessage("User"),
         "tValidateIValid": MessageLookupByLibrary.simpleMessage(
             "The value must be a valid number"),

@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<ClientBloc>(),
+      create: (context) => DependencyInyection.sl<ClientBloc>(),
       child: MaterialApp(
           builder: (context, child) => ResponsiveWrapper.builder(child,
               maxWidth: 1200,
@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
+          // theme: ThemeData(useMaterial3: true),
           supportedLocales: S.delegate.supportedLocales,
           debugShowCheckedModeBanner: false,
           home: const HomeScreen()),

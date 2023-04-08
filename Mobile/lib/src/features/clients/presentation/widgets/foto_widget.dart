@@ -73,6 +73,7 @@ class FotoWidget extends StatelessWidget {
             }
           },
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 Text(
@@ -84,14 +85,16 @@ class FotoWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: const Image(
-                      image: AssetImage(
-                        'assets/no-image.png',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                      borderRadius: BorderRadius.circular(20),
+                      child: state.editGarbage!.id.isEmpty
+                          ? Image.asset(
+                              'assets/no-image.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              state.editGarbage!.imageUrl,
+                              fit: BoxFit.cover,
+                            )),
                 ),
                 Row(
                   children: [

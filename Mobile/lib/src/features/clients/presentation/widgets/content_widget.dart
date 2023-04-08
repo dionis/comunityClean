@@ -32,6 +32,7 @@ class ContentWidget extends StatelessWidget {
             ),
             const Expanded(
                 child: TabBarView(
+                    physics: BouncingScrollPhysics(),
                     children: [PendientesWidget(), CompletadosWidget()]))
           ],
         ));
