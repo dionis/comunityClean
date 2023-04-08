@@ -289,6 +289,96 @@ class S {
       args: [],
     );
   }
+
+  /// `Submitting Request Please Wait...`
+  String get tSubiendo {
+    return Intl.message(
+      'Submitting Request Please Wait...',
+      name: 'tSubiendo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Amount of Garbage`
+  String get tCantBasura {
+    return Intl.message(
+      'Amount of Garbage',
+      name: 'tCantBasura',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this contract?`
+  String get tPregunta {
+    return Intl.message(
+      'Are you sure you want to delete this contract?',
+      name: 'tPregunta',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirmation`
+  String get tConfirmacion {
+    return Intl.message(
+      'Confirmation',
+      name: 'tConfirmacion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get tCancelar {
+    return Intl.message(
+      'Cancel',
+      name: 'tCancelar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accept`
+  String get tAceptar {
+    return Intl.message(
+      'Accept',
+      name: 'tAceptar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Locate on the Map`
+  String get tUbicar {
+    return Intl.message(
+      'Locate on the Map',
+      name: 'tUbicar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Position`
+  String get tSavePosition {
+    return Intl.message(
+      'Save Position',
+      name: 'tSavePosition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Between`
+  String get tEntre {
+    return Intl.message(
+      'Between',
+      name: 'tEntre',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
