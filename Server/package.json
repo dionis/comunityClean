@@ -10,6 +10,8 @@
   "author": "Claudia, Luis",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^4.11.0",
+    "@prisma/engines": "^4.11.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "colors": "^1.4.0",
@@ -20,7 +22,8 @@
     "express-validator": "^6.14.3",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.4",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "prisma": "^4.11.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.20.7",
