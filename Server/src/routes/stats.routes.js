@@ -10,19 +10,19 @@ stats.post("/api/v1/stats", async (req, res) => {
   try {
     const newStat = Stats(await generateStat());
     const savedStat = await newStat.save();
-    res.send(savedStat);
+    res.status(200).json(savedStat);
   } catch (error) {
-    res.send(error);
+    res.status(400).json({message:error});
   }
 });
 
 stats.get("/api/v1/stats", async (req,res)=>{
     try{
         const allStats = await Stats.find();
-        res.send(allStats)
+        res.status(200).json(allStats)
     }catch(e){
         console.log(e);
-        res.send(e)
+        res.status(400).json({message:e})
     }
 });
 
