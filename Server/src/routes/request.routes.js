@@ -41,8 +41,8 @@ cRequests.get("/api/v1/requests/user/:uid", async (req, res) => {
     const requests = await prisma.request.findMany({
       where: { userId: Number(req.params.uid) },
     });
-    if(requests.length !== 0) return res.status(200).json(requests);
-    res.status(400).json({ message: "No Existen Request" });
+    res.status(200).json(requests)
+
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: error });
@@ -54,9 +54,7 @@ cRequests.get("/api/v1/requests/one/:id", async (req, res) => {
     const requests = await prisma.request.findMany({
       where: { id: Number(req.params.id) },
     });
-    if(!requests.isEmpty) return res.status(200).json(requests);
-    
-    res.status(400).json({ message: "No Existen Request" });
+    res.status(200).json(requests)
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: error });
@@ -68,9 +66,10 @@ cRequests.get("/api/v1/requests/done", async (req, res) => {
     const requests = await prisma.request.findMany({
       where: { stat: Boolean(true) },
     });
-    if(requests.length !== 0) return res.status(200).json(requests);
+    if(requests.length !== 0) return ;
     
-    res.status(400).json({ message: "No Existen Request" });
+    res.status(200).json(requests)
+
   } catch (error) {
     res.status(400).json({ message: error });
   }
@@ -81,9 +80,8 @@ cRequests.get("/api/v1/requests/pending", async (req, res) => {
     const requests = await prisma.request.findMany({
       where: { stat: Boolean(false) },
     });
-    if(requests.length !== 0) return res.status(200).json(requests);
-    
-    res.status(400).json({ message: "No Existen Request" });
+    res.status(200).json(requests)
+
   } catch (error) {
     res.status(400).json({ message: error });
   }
@@ -94,9 +92,8 @@ cRequests.get("/api/v1/requests/done/:id", async (req, res) => {
     const requests = await prisma.request.findMany({
       where: { user: req.params.id, stat: Boolean(true) },
     });
-    if(requests.length !== 0) return res.status(200).json(requests);
-    
-    res.status(400).json({ message: "No Existen Request" });
+    res.status(200).json(requests)
+
   } catch (error) {
     res.status(400).json({ message: error });
   }
@@ -110,9 +107,8 @@ cRequests.get("/api/v1/requests/pending/:id", async (req, res) => {
         stat: false,
       },
     });
-    if(requests.length !== 0) return res.status(200).json(requests);
-    
-    res.status(400).json({ message: "No Existen Request" });
+    res.status(200).json(requests)
+
   } catch (error) {
     res.status(400).json({ message: error });
   }
@@ -130,9 +126,8 @@ cRequests.get(
       const requests = await prisma.request.findOne({
         where: { id: req.params.id },
       });
-      if(requests.length !== 0) return res.status(200).json(requests);
-    
-    res.status(400).json({ message: "No Existen Request" });
+      res.status(200).json(requests)
+
     } catch (error) {
       const errors = validationResult(req);
 
@@ -198,9 +193,7 @@ cRequests.delete(
       const removedRequests = await prisma.request.delete({
         where: {id}
       });
-      if(!removedRequests.isEmpty) return res.status(200).json(removedRequests);
-    
-      res.status(400).json({ message: "No Existen Request" });
+      res.status(200).json(removedRequests)
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: "Invalid Id" });
