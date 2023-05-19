@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:city_clean/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/theme/theme.dart';
 import '../bloc/client_bloc.dart';
@@ -64,9 +67,8 @@ class FotoWidget extends StatelessWidget {
               Navigator.of(context, rootNavigator: true).pop(dialog);
               BlocProvider.of<ClientBloc>(context)
                   .add(ClientEvent.changeDotsEvent(dots: 0));
-              BlocProvider.of<ClientBloc>(context).add(
-                  ClientEvent.getAllGarbageRequest(
-                      id: '641f7db8450bea919af27e6f'));
+              BlocProvider.of<ClientBloc>(context)
+                  .add(ClientEvent.getAllGarbageRequest(id: '1'));
               Navigator.pop(context);
             } else if (state.garbageSubmit == GarbageSubmit.error) {
               Navigator.of(context, rootNavigator: true).pop(dialog);
@@ -86,11 +88,18 @@ class FotoWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: state.editGarbage!.id.isEmpty
-                          ? Image.asset(
-                              'assets/no-image.png',
-                              fit: BoxFit.cover,
-                            )
+                      child: state.editGarbage!.id.isEmpty ||
+                              state.imageUrl.isNotEmpty
+                          ? context.select(
+                              (ClientBloc value) => value.state.imageUrl.isEmpty
+                                  ? Image.asset(
+                                      'assets/no-image.png',
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.file(
+                                      File(value.state.imageUrl),
+                                      fit: BoxFit.cover,
+                                    ))
                           : Image.network(
                               state.editGarbage!.imageUrl,
                               fit: BoxFit.cover,
@@ -101,7 +110,11 @@ class FotoWidget extends StatelessWidget {
                     const Spacer(),
                     FloatingActionButton(
                       heroTag: 'hero1',
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<ClientBloc>().add(
+                            ClientEvent.updateImageUrl(
+                                imageSource: ImageSource.gallery));
+                      },
                       backgroundColor: ThemeWidget.colorPrimary,
                       child: const Icon(Icons.photo),
                     ),
@@ -109,7 +122,11 @@ class FotoWidget extends StatelessWidget {
                     FloatingActionButton(
                       heroTag: 'hero',
                       backgroundColor: ThemeWidget.colorPrimary,
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<ClientBloc>().add(
+                            ClientEvent.updateImageUrl(
+                                imageSource: ImageSource.camera));
+                      },
                       child: const Icon(Icons.camera_alt_rounded),
                     ),
                     const Spacer(),
@@ -147,15 +164,26 @@ class FotoWidget extends StatelessWidget {
                       const Spacer(),
                       TextButton(
                         onPressed: () {
-                          BlocProvider.of<ClientBloc>(context).add(
-                              ClientEvent.updateNewGarbage(
-                                  key: 'user',
-                                  value: '641f7db8450bea919af27e6f'));
-                          BlocProvider.of<ClientBloc>(context).add(
-                              ClientEvent.submitNewGarbage(
-                                  key: 'image_url',
-                                  value:
-                                      'https://previews.123rf.com/images/nikitos77/nikitos771705/nikitos77170500028/77491626-cami%C3%B3n-de-basura-descarga-basura-del-contenedor-en-el-vertedero.jpg'));
+                          if (state.imageUrl.isNotEmpty ||
+                              state.editGarbage!.imageUrl.isNotEmpty) {
+                            BlocProvider.of<ClientBloc>(context).add(
+                                ClientEvent.updateNewGarbage(
+                                    key: 'userId', value: 1));
+                            BlocProvider.of<ClientBloc>(context).add(
+                                ClientEvent.submitNewGarbage(
+                                    key: 'image_url',
+                                    value: state.imageUrl.isEmpty
+                                        ? state.editGarbage!.imageUrl
+                                        : state.imageUrl));
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('Inserte una Imagen'),
+                              backgroundColor: ThemeWidget.colorPrimary,
+                              duration: Duration(seconds: 2),
+                            ));
+                            return;
+                          }
                         },
                         style: TextButton.styleFrom(
                             backgroundColor: ThemeWidget.colorPrimary,

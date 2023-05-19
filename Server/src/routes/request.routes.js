@@ -3,6 +3,9 @@ import express, { Router } from "express";
 import { requestRule, requestRuleNotR } from "../validation/requests";
 const { validationResult, param } = require("express-validator");
 import { PrismaClient } from "@prisma/client";
+import multer from "multer"
+import fs from "fs"
+import path from "path"
 
 const prisma = new PrismaClient();
 const cRequests = Router();
@@ -27,21 +30,35 @@ cRequests.post("/api/v1/requests", requestRule, async (req, res) => {
       },
     });
 
-    res.send(savedRequest);
+    res.status(200).json(savedRequest);
   } catch (error) {
-    res.json({ message: error });
+    console.log(error)
+    res.status(400).json({ message: error });
   }
 });
 
-cRequests.get("/api/v1/requests/:id", async (req, res) => {
+cRequests.get("/api/v1/requests/user/:uid", async (req, res) => {
+  try {
+    const requests = await prisma.request.findMany({
+      where: { userId: Number(req.params.uid) },
+    });
+    res.status(200).json(requests)
+
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: error });
+  }
+});
+
+cRequests.get("/api/v1/requests/one/:id", async (req, res) => {
   try {
     const requests = await prisma.request.findMany({
       where: { id: Number(req.params.id) },
     });
-    res.json(requests);
+    res.status(200).json(requests)
   } catch (error) {
     console.log(error);
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -50,9 +67,12 @@ cRequests.get("/api/v1/requests/done", async (req, res) => {
     const requests = await prisma.request.findMany({
       where: { stat: Boolean(true) },
     });
-    res.send(requests);
+    if(requests.length !== 0) return ;
+    
+    res.status(200).json(requests)
+
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -61,9 +81,10 @@ cRequests.get("/api/v1/requests/pending", async (req, res) => {
     const requests = await prisma.request.findMany({
       where: { stat: Boolean(false) },
     });
-    res.send(requests);
+    res.status(200).json(requests)
+
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -72,9 +93,10 @@ cRequests.get("/api/v1/requests/done/:id", async (req, res) => {
     const requests = await prisma.request.findMany({
       where: { user: req.params.id, stat: Boolean(true) },
     });
-    res.send(requests);
+    res.status(200).json(requests)
+
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -86,9 +108,10 @@ cRequests.get("/api/v1/requests/pending/:id", async (req, res) => {
         stat: false,
       },
     });
-    res.send(requests);
+    res.status(200).json(requests)
+
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -104,11 +127,12 @@ cRequests.get(
       const requests = await prisma.request.findOne({
         where: { id: req.params.id },
       });
-      res.send(requests);
+      res.status(200).json(requests)
+
     } catch (error) {
       const errors = validationResult(req);
 
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
@@ -148,15 +172,14 @@ cRequests.put(
           data: { locations: locations },
         });
       }
-
-      res.send(
+      res.status(200).json(
         await prisma.request.findMany({
           where: { id },
         })
       );
     } catch (error) {
       console.log(error);
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
@@ -170,12 +193,62 @@ cRequests.delete(
       const removedRequests = await prisma.request.delete({
         where: {id}
       });
-      res.send(removedRequests);
+      res.status(200).json(removedRequests)
     } catch (error) {
       console.log(error);
-      res.send({ message: "Invalid Id" });
+      res.status(400).json({ message: "Invalid Id" });
     }
   }
 );
+
+
+
+const maxSize = 2 * 1024 * 1024;
+const storage = multer.diskStorage({
+  destination: './uploads',
+  filename: (req, file, cb) => {
+    const img = Date.now()+'.jpg'
+    cb(null, img);
+  }
+});
+
+const upload = multer({ storage,limits: { fileSize: maxSize } });
+
+// Define the upload route
+cRequests.post('/upload', upload.single('image'), (req, res) => {
+  // Get the uploaded file
+  const file = req.file;
+
+  // If no file was uploaded, return an error
+  if (!file) {
+    res.status(400).send('No file was uploaded.');
+    return;
+  }
+
+  // Create a URL for the file
+  const fileUrl = `/uploads/${file.filename}`;
+
+  // Send the file URL back to the client
+  res.status(200).json({ fileUrl });
+});
+
+cRequests.get('/uploads/:filename', (req, res) => {
+  // Get the file name
+  const filename = req.params.filename;
+
+  // Get the file path
+  const filePath = `/uploads/${filename}`;
+  const projectPath = path.join(__dirname,  '..', '..',filePath);
+
+  // Check if the file exists
+  if (!fs.existsSync(projectPath)) {
+    res.status(404).send('File not found.');
+    return;
+  }
+
+  // Serve the file
+  res.sendFile(projectPath);
+});
+
 
 export default cRequests;

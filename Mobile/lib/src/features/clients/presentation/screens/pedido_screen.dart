@@ -17,6 +17,7 @@ class PedidoScreen extends StatelessWidget {
             onPressed: () {
               BlocProvider.of<ClientBloc>(context)
                   .add(ClientEvent.changeDotsEvent(dots: 0));
+
               Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back_ios_new_rounded)),

@@ -1,4 +1,5 @@
 import 'package:city_clean/src/core/network/network_info.dart';
+import 'package:city_clean/src/features/clients/domain/usecases/upload_image.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -21,6 +22,7 @@ class DependencyInyection {
     sl.registerFactory(() => ClientBloc(
         addGarbageRequestUse: sl(),
         getAllGarbageRequestUse: sl(),
+        uploadImage: sl(),
         deleteGarbageRequest: sl(),
         updateGarbageRequest: sl()));
 
@@ -28,6 +30,7 @@ class DependencyInyection {
     sl.registerLazySingleton(() => GetAllGarbageRequest(repository: sl()));
     sl.registerLazySingleton(() => AddGarbageRequest(repository: sl()));
     sl.registerLazySingleton(() => DeleteGarbageRequest(repository: sl()));
+    sl.registerLazySingleton(() => UploadImage(repository: sl()));
     sl.registerLazySingleton(() => UpdateGarbageRequest(repository: sl()));
 
     // Repository
@@ -37,7 +40,7 @@ class DependencyInyection {
     // Datasources
     sl.registerLazySingleton<RemoteClientDatasource>(() =>
         DioRemoteClientDatasource(
-            url: 'http://localhost:8000/api/v1/requests/', client: sl()));
+            url: 'http://192.168.1.106:8000/api/v1/requests/', client: sl()));
 
     // Core
     sl.registerLazySingleton<NetworkInfo>(

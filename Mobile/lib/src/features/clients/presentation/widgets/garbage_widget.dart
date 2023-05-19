@@ -110,15 +110,19 @@ class GarbageWidget extends StatelessWidget {
                   ));
             },
             onLongPress: () => showDialog(
-              barrierDismissible: true,
-              context: context,
-              builder: (context) => Hero(
-                tag: pendiente.id!,
-                child: FadeInImage(
-                    placeholder: const AssetImage('assets/no-image.png'),
-                    image: NetworkImage(pendiente.imageUrl!)),
-              ),
-            ),
+                barrierDismissible: true,
+                context: context,
+                builder: (context) => AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      content: Hero(
+                        tag: pendiente.id!,
+                        child: FadeInImage(
+                            placeholder:
+                                const AssetImage('assets/no-image.png'),
+                            image: NetworkImage(pendiente.imageUrl!)),
+                      ),
+                    )),
             child: FadeInLeft(
               child: ListTile(
                 leading: Hero(

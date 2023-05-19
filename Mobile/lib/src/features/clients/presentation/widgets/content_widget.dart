@@ -13,7 +13,7 @@ class ContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<ClientBloc>(context)
-        .add(ClientEvent.getAllGarbageRequest(id: '641f7db8450bea919af27e6f'));
+        .add(ClientEvent.getAllGarbageRequest(id: '1'));
     return DefaultTabController(
         length: 2,
         child: Column(

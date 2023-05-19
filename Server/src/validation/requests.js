@@ -15,9 +15,7 @@ const requestRule = [
     .withMessage("El estado es de tipo booleano"),
   body("image_url", "El formato de la url es incorrecto")
     .exists()
-    .withMessage("El link de la imagen es requerido")
-    .isURL()
-    .withMessage("Debe escribir el link correctamente"),
+    .withMessage("El link de la imagen es requerido"),
   body("locations", "La dirección debe ser en formato de texto")
     .exists()
     .withMessage("Campo obligatorio")

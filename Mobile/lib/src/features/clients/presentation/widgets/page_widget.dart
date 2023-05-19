@@ -1,5 +1,3 @@
-import 'package:city_clean/src/features/clients/data/models/garbage_model.dart';
-import 'package:city_clean/src/features/clients/domain/entitie/garbage.dart';
 import 'package:flutter/material.dart';
 
 import 'direccion_widget.dart';

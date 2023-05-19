@@ -38,13 +38,15 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.2
   flutter_localization: ^0.1.10
-  flutter_map: ^3.1.0
+  flutter_map: ^4.0.0
   get_it: ^7.2.0
   google_fonts: ^4.0.3
   im_stepper: ^1.0.1+1
-  image_picker: ^0.8.7
+  image_cropper: ^4.0.1
+  image_picker: ^0.8.7+5
   internet_connection_checker: ^1.0.0+1
-  intl: ^0.17.0
+  intl: null
+  permission_handler: ^10.2.0
   responsive_framework: ^0.2.0
 
 dev_dependencies:

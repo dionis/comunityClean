@@ -9,6 +9,7 @@ class ClientState extends Equatable {
       {this.garbageStatus = GarbageStatus.initial,
       this.garbageSubmit = GarbageSubmit.initial,
       this.listCompletos = const [],
+      this.imageUrl = '',
       this.listPendientes = const [],
       this.newGarbage = const {},
       this.error = '',
@@ -21,6 +22,7 @@ class ClientState extends Equatable {
   final GarbageSubmit garbageSubmit;
   final List<Garbage> listCompletos;
   final List<Garbage> listPendientes;
+  final String imageUrl;
   final int dotsIndex;
   final Map<String, dynamic> newGarbage;
   final int index;
@@ -40,6 +42,7 @@ class ClientState extends Equatable {
           String? error,
           Map<String, dynamic>? newGarbage,
           int? index,
+          String? imageUrl,
           LatLng? position,
           GarbageModel? editGarbage}) =>
       ClientState(
@@ -47,6 +50,7 @@ class ClientState extends Equatable {
           dotsIndex: dotsIndex ?? this.dotsIndex,
           garbageSubmit: garbageSubmit ?? this.garbageSubmit,
           newGarbage: newGarbage ?? this.newGarbage,
+          imageUrl: imageUrl ?? this.imageUrl,
           listCompletos: listCompletos ?? this.listCompletos,
           listPendientes: listPendientes ?? this.listPendientes,
           garbageStatus: garbageStatus ?? this.garbageStatus,
@@ -61,6 +65,7 @@ class ClientState extends Equatable {
         dotsIndex,
         index,
         error,
+        imageUrl,
         newGarbage,
         garbageSubmit,
         position ?? LatLng(20.02163, -75.82966),

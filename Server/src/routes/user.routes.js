@@ -40,10 +40,10 @@ users.post("/api/v1/users/register", async (req, res) => {
       },
     });
 
-    res.json(userSaved);
+    res.status(200).json(userSaved);
   } catch (error) {
     console.log(error);
-    res.json(error);
+    res.status(400).json(error);
   }
 });
 
@@ -68,19 +68,19 @@ users.post("/api/v1/users/login", loginRule, async (req, res) => {
       return res.status(400).json({ error: "La contraseña es incorrecta" });
     }
 
-    res.send({ message: "Login exitoso, Bienvenido" });
+    res.status(200).json({ message: "Login exitoso, Bienvenido" });
   } catch (error) {
     console.log(error);
-    res.json({ error });
+    res.status(400).json({ error });
   }
 });
 
 users.get("/api/v1/users", async (req, res) => {
   try {
     const user =  await prisma.user.findMany();
-    res.send(user);
+    res.status(200).json(user);
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -94,13 +94,13 @@ users.get(
         return res.status(400).json({ errors: errors.array() });
       }
       const user = await User.findById(req.params.id);
-      res.send(user);
+      res.status(200).json(user);
     } catch (error) {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       } else {
-        res.json({ message: error });
+        res.status(400).json({ message: error });
       }
     }
   }
@@ -164,9 +164,9 @@ users.put(
         );
       }
 
-      res.send(await User.findById(req.params.id));
+      res.status(200).json(await User.findById(req.params.id));
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
@@ -183,9 +183,9 @@ users.delete(
       const removedRequests = await User.deleteOne({
         _id: req.params.id,
       });
-      res.send(removedRequests);
+      res.status(200).json(removedRequests);
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
