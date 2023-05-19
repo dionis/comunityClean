@@ -14,9 +14,9 @@ class ClientGarbageRepositoryImpl implements ClientGarbageRepository {
   final RemoteClientDatasource _datasource;
   @override
   Future<Either<Failure, Garbage>> addGarbageRequest(
-      GarbageModel garbage) async {
+      GarbageModel garbage, int id) async {
     try {
-      final data = await _datasource.addGarbageRequest(garbage);
+      final data = await _datasource.addGarbageRequest(garbage, id);
       return Right(data);
     } on ConexionException {
       return Left(ConexionFailure());
@@ -48,6 +48,16 @@ class ClientGarbageRepositoryImpl implements ClientGarbageRepository {
       GarbageModel newGarbage) async {
     try {
       final data = await _datasource.updateGarbageRequest(newGarbage);
+      return Right(data);
+    } on ConexionException {
+      return Left(ConexionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadImage(String path) async {
+    try {
+      final data = await _datasource.uploadImage(path);
       return Right(data);
     } on ConexionException {
       return Left(ConexionFailure());

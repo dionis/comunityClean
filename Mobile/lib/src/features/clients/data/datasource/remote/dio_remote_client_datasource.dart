@@ -13,9 +13,11 @@ class DioRemoteClientDatasource implements RemoteClientDatasource {
   final Dio _client;
 
   @override
-  Future<Garbage> addGarbageRequest(GarbageModel garbage) async {
+  Future<Garbage> addGarbageRequest(GarbageModel garbage, int id) async {
     try {
-      final results = await _client.post(_url, data: garbage.toJson());
+      Map data = garbage.toJson();
+      data['userId'] = id;
+      final results = await _client.post(_url, data: data);
       if (results.statusCode == 200) {
         return GarbageModel.fromJson(results.data);
       }
@@ -29,15 +31,16 @@ class DioRemoteClientDatasource implements RemoteClientDatasource {
   Future<List<Garbage>> getAllGarbage(String id) async {
     try {
       List<Garbage> listGarbage = [];
-      final results = await _client.get('$_url$id');
-      if (results.statusCode == 200) {
-        for (var i = 0; i < results.data.length; i++) {
-          final element = results.data[i];
+      final request = await _client.get('${_url}user/$id');
+      if (request.statusCode == 200) {
+        for (var i = 0; i < request.data.length; i++) {
+          final element = request.data[i];
           listGarbage.add(GarbageModel.fromJson(element));
         }
         return listGarbage;
+      } else {
+        throw ConexionException();
       }
-      throw ConexionException();
     } catch (e) {
       throw ConexionException();
     }
@@ -62,9 +65,28 @@ class DioRemoteClientDatasource implements RemoteClientDatasource {
       final results =
           await _client.put('$_url${newGarbage.id}', data: newGarbage.toJson());
       if (results.statusCode == 200) {
-        return GarbageModel.fromJson(results.data);
+        return GarbageModel.fromJson(results.data[0]);
       }
       throw ConexionException();
+    } catch (e) {
+      throw ConexionException();
+    }
+  }
+
+  @override
+  Future<String> uploadImage(String path) async {
+    try {
+      final formData = FormData.fromMap({
+        'image': await MultipartFile.fromFile(path),
+      });
+      String baseUrl = 'http://192.168.1.106:8000';
+      final response = await _client.post('$baseUrl/upload', data: formData);
+
+      if (response.statusCode == 200) {
+        return '$baseUrl${response.data["fileUrl"]}';
+      } else {
+        throw ConexionException();
+      }
     } catch (e) {
       throw ConexionException();
     }

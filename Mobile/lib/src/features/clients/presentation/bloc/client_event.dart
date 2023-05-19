@@ -9,8 +9,9 @@ abstract class ClientEvent {
 
   factory ClientEvent.getAllGarbageRequest({required String id}) =>
       _GetAllGarbageRequest(id: id);
-  factory ClientEvent.addGarbageRequest({required GarbageModel garbage}) =>
-      _AddGarbageRequest(garbage: garbage);
+  factory ClientEvent.addGarbageRequest(
+          {required GarbageModel garbage, required int id}) =>
+      _AddGarbageRequest(garbage: garbage, id: id);
 
   factory ClientEvent.resetNewGarbage() => const _ResetNewGarbage();
   factory ClientEvent.submitNewGarbage(
@@ -28,6 +29,9 @@ abstract class ClientEvent {
       _UpdateGarbage(newGarbage: newGarbage);
   factory ClientEvent.updateRequest({required GarbageModel newGarbage}) =>
       _UpdateRequest(newGarbage: newGarbage);
+
+  factory ClientEvent.updateImageUrl({required ImageSource imageSource}) =>
+      _UpdateImageUrl(imageSource: imageSource);
 }
 
 class _ChangeDotsEvent implements ClientEvent {
@@ -47,8 +51,9 @@ class _GetAllGarbageRequest implements ClientEvent {
 }
 
 class _AddGarbageRequest implements ClientEvent {
-  const _AddGarbageRequest({required this.garbage});
+  const _AddGarbageRequest({required this.garbage, required this.id});
   final GarbageModel garbage;
+  final int id;
 }
 
 class _UpdateNewGarbage implements ClientEvent {
@@ -85,4 +90,9 @@ class _UpdateGarbage implements ClientEvent {
 class _UpdateRequest implements ClientEvent {
   _UpdateRequest({required this.newGarbage});
   final GarbageModel newGarbage;
+}
+
+class _UpdateImageUrl implements ClientEvent {
+  _UpdateImageUrl({required this.imageSource});
+  final ImageSource imageSource;
 }

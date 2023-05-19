@@ -34,8 +34,8 @@ class GarbageModel implements Garbage {
   bool get stringify => false;
 
   factory GarbageModel.fromJson(Map<String, dynamic> json) => GarbageModel(
-        id: json["_id"] ?? '',
-        user: json["user"],
+        id: json["id"] != null ? json["id"].toString() : '',
+        user: json["userId"] != null ? json["userId"].toString() : '',
         amountGarbage: json["amountGarbage"],
         stat: json["stat"] ?? false,
         imageUrl: json["image_url"],
@@ -43,7 +43,7 @@ class GarbageModel implements Garbage {
       );
 
   Map<String, dynamic> toJson() => {
-        "user": user,
+        "userId": user,
         "amountGarbage": amountGarbage,
         "stat": stat,
         "image_url": imageUrl,

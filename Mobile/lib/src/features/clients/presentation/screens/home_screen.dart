@@ -38,22 +38,28 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          heroTag: 'locura',
-          onPressed: () {
-            BlocProvider.of<ClientBloc>(context).add(ClientEvent.updateGarbage(
-                newGarbage: GarbageModel(
-                    amountGarbage: 0,
-                    id: '',
-                    imageUrl: '',
-                    locations: '',
-                    stat: false,
-                    user: '')));
-            Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => const PedidoScreen(),
-                ));
-          },
+          heroTag: 'hero5',
+          onPressed: context.select(
+            (ClientBloc value) =>
+                value.state.garbageStatus == GarbageStatus.error
+                    ? null
+                    : () {
+                        BlocProvider.of<ClientBloc>(context).add(
+                            ClientEvent.updateGarbage(
+                                newGarbage: GarbageModel(
+                                    amountGarbage: 0,
+                                    id: '',
+                                    imageUrl: '',
+                                    locations: '',
+                                    stat: false,
+                                    user: '')));
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => const PedidoScreen(),
+                            ));
+                      },
+          ),
           backgroundColor: ThemeWidget.colorPrimary,
           child: const Icon(Icons.add),
         ),

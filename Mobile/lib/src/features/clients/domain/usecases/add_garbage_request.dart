@@ -12,6 +12,6 @@ class AddGarbageRequest {
   final ClientGarbageRepository _repository;
 
   Future<Either<Failure, Garbage>> call(
-          {required GarbageModel garbage}) async =>
-      await _repository.addGarbageRequest(garbage);
+          {required GarbageModel garbage, required int id}) async =>
+      await _repository.addGarbageRequest(garbage, id);
 }

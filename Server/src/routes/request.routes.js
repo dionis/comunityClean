@@ -32,6 +32,7 @@ cRequests.post("/api/v1/requests", requestRule, async (req, res) => {
 
     res.status(200).json(savedRequest);
   } catch (error) {
+    console.log(error)
     res.status(400).json({ message: error });
   }
 });
@@ -171,7 +172,6 @@ cRequests.put(
           data: { locations: locations },
         });
       }
-
       res.status(200).json(
         await prisma.request.findMany({
           where: { id },
@@ -226,7 +226,7 @@ cRequests.post('/upload', upload.single('image'), (req, res) => {
   }
 
   // Create a URL for the file
-  const fileUrl = `http://localhost:8000/uploads/${file.filename}`;
+  const fileUrl = `/uploads/${file.filename}`;
 
   // Send the file URL back to the client
   res.status(200).json({ fileUrl });
