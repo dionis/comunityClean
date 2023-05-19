@@ -15,18 +15,18 @@ groups.post("/api/v1/groups", groupRule, async (req, res) => {
 
     const newGroup = Group(req.body);
     const groupSaved = await newGroup.save();
-    res.send(groupSaved);
+    res.status(200).json(groupSaved);
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
 groups.get("/api/v1/groups", async (req, res) => {
   try {
     const group = await Group.find();
-    res.send(group);
+    res.status(200).json(group);
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -41,9 +41,9 @@ groups.get(
       }
 
       const group = await Group.findById(req.params.id);
-      res.send(group);
+      res.status(200).json(group);
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
@@ -85,9 +85,9 @@ groups.put(
         );
       }
 
-      res.send(await Group.findById(req.params.id));
+      res.status(200).json(await Group.findById(req.params.id));
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
@@ -105,9 +105,9 @@ groups.delete(
       const removedRequests = await Group.deleteOne({
         _id: req.params.id,
       });
-      res.send(removedRequests);
+      res.status(200).json(removedRequests);
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );

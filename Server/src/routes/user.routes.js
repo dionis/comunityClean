@@ -4,6 +4,9 @@ import Worker from "../models/worker";
 import { userRule, userRuleNotR, loginRule } from "../validation/user";
 import bodyparser from "body-parser";
 const { validationResult, param } = require("express-validator");
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const bcrypt = require("bcrypt");
 const users = Router();
@@ -12,24 +15,35 @@ users.use(bodyparser.urlencoded({ extended: false }));
 users.use(bodyparser.json());
 
 // Registro del usuario
-users.post("/api/v1/users/register", userRule, async (req, res) => {
+users.post("/api/v1/users/register", async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    let { name, last_name, email, username, password, ci, rolNum, phoneNumber } =
+      req.body;
 
     const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash(req.body.password, salt);
+    password = await bcrypt.hash(password, salt);
 
-    const newUser = User(req.body);
-    newUser.password = password;
-    const userSaved = await newUser.save();
-    res.send({
-      message: `El usuario ${userSaved.username} se ha registrado con éxito`,
+    const userSaved = await prisma.user.create({
+      data: {
+        name,
+        last_name,
+        email,
+        username,
+        password,
+        ci,
+        rolNum,
+        phoneNumber,
+      },
     });
+
+    res.status(200).json(userSaved);
   } catch (error) {
-    res.json({ message: error });
+    console.log(error);
+    res.status(400).json(error);
   }
 });
 
@@ -41,9 +55,7 @@ users.post("/api/v1/users/login", loginRule, async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const validUser =
-      (await User.findOne({ email: req.body.email })) ||
-      (await Worker.findOne({ email: req.body.email }));
+    const validUser = await prisma.user.findOne({ email: req.body.email });
     if (!validUser) {
       return res.status(400).json({ error: "El nombre de usuario no existe" });
     }
@@ -56,19 +68,19 @@ users.post("/api/v1/users/login", loginRule, async (req, res) => {
       return res.status(400).json({ error: "La contraseña es incorrecta" });
     }
 
-    res.send({ message: "Login exitoso, Bienvenido" });
+    res.status(200).json({ message: "Login exitoso, Bienvenido" });
   } catch (error) {
     console.log(error);
-    res.json({ error });
+    res.status(400).json({ error });
   }
 });
 
 users.get("/api/v1/users", async (req, res) => {
   try {
-    const user = await User.find();
-    res.send(user);
+    const user =  await prisma.user.findMany();
+    res.status(200).json(user);
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -82,13 +94,13 @@ users.get(
         return res.status(400).json({ errors: errors.array() });
       }
       const user = await User.findById(req.params.id);
-      res.send(user);
+      res.status(200).json(user);
     } catch (error) {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       } else {
-        res.json({ message: error });
+        res.status(400).json({ message: error });
       }
     }
   }
@@ -152,9 +164,9 @@ users.put(
         );
       }
 
-      res.send(await User.findById(req.params.id));
+      res.status(200).json(await User.findById(req.params.id));
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
@@ -171,9 +183,9 @@ users.delete(
       const removedRequests = await User.deleteOne({
         _id: req.params.id,
       });
-      res.send(removedRequests);
+      res.status(200).json(removedRequests);
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );

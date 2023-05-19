@@ -22,20 +22,20 @@ admins.post("/api/v1/admins/register", adminRule, async (req, res) => {
     const newAdmin = Admin(req.body);
     newAdmin.user.password = password;
     const adminSaved = await newAdmin.save();
-    res.send({
+    res.status(200).json({
       message: `El usuario ${adminSaved.user.username} se ha registrado con éxito`,
     });
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
 admins.get("/api/v1/admins", async (req, res) => {
   try {
     const admin = await Admin.find();
-    res.send(admin);
+    res.status(200).json(admin);
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -49,13 +49,13 @@ admins.get(
         return res.status(400).json({ errors: errors.array() });
       }
       const admin = await Admin.findById(req.params.id);
-      res.send(admin);
+      res.status(200).json(admin);
     } catch (error) {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       } else {
-        res.json({ message: error });
+        res.status(400).json({ message: error });
       }
     }
   }
@@ -131,9 +131,9 @@ admins.put(
         );
       }
 
-      res.send(await Admin.findById(req.params.id));
+      res.status(200).json(await Admin.findById(req.params.id));
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
@@ -150,9 +150,9 @@ admins.delete(
       const removedRequests = await Admin.deleteOne({
         _id: req.params.id,
       });
-      res.send(removedRequests);
+      res.status(200).json(removedRequests);
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );

@@ -32,9 +32,9 @@ notifications.post(
 notifications.get("/api/v1/notifications", async (req, res) => {
   try {
     const notif = await notification.find();
-    res.send(notif);
+    res.status(200).json(notif);
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -48,13 +48,13 @@ notifications.get(
         return res.status(400).json({ errors: errors.array() });
       }
       const notifications = await notification.findById(req.params.id);
-      res.send(notifications);
+      res.status(200).json(notifications);
     } catch (error) {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       } else {
-        res.json({ message: error });
+        res.status(400).json({ message: error });
       }
     }
   }
@@ -97,9 +97,9 @@ notifications.put(
         );
       }
 
-      res.send(await notification.findById(req.params.id));
+      res.status(200).json(await notification.findById(req.params.id));
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
@@ -122,7 +122,7 @@ notifications.delete(
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
       } else {
-        res.json({ message: error });
+        res.status(400).json({ message: error });
       }
     }
   }

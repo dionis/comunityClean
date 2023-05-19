@@ -24,12 +24,12 @@ workers.post("/api/v1/workers/register", workerRule, async (req, res) => {
     newWorker.user.password = password;
     const workerSaved = await newWorker.save();
 
-    res.send({
+    res.status(200).json({
       message: `El usuario ${workerSaved.user.username} se ha registrado con éxito`,
     });
   } catch (error) {
     console.log(error);
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -37,9 +37,9 @@ workers.get("/api/v1/workers", async (req, res) => {
   try {
     const worker = await Worker.find();
 
-    res.send(worker);
+    res.status(200).json(worker);
   } catch (error) {
-    res.json({ message: error });
+    res.status(400).json({ message: error });
   }
 });
 
@@ -53,9 +53,9 @@ workers.get(
         return res.status(400).json({ errors: errors.array() });
       }
       const worker = await Worker.findById(req.params.id);
-      res.send(worker);
+      res.status(200).json(worker);
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
@@ -115,9 +115,9 @@ workers.put(
         );
       }
 
-      res.send(await Worker.findById(req.params.id));
+      res.status(200).json(await Worker.findById(req.params.id));
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
@@ -134,9 +134,9 @@ workers.delete(
       const removedRequests = await Worker.deleteOne({
         _id: req.params.id,
       });
-      res.send(removedRequests);
+      res.status(200).json(removedRequests);
     } catch (error) {
-      res.json({ message: error });
+      res.status(400).json({ message: error });
     }
   }
 );
