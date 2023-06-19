@@ -17,7 +17,9 @@ Crear en la carpeta Server un archivo .env que contenga la siguiente linea de c�
 
 DATABASE_URL="postgresql://postgres:1234@localhost:5432/cityclean"
 
-en username colocaremos el nombre de nuestro usuario en postgres y en password la contraseña correspondiente para luego ejecutar el comando
+en username colocaremos el nombre de nuestro usuario en postgres y en password la contraseña correspondiente.
+
+Agregamos a el archivo .env el APIKEY de Stripe para poder ejecutar las compras online para luego ejecutar el comando:
 
 ```bash
 npx prisma generate
