@@ -18,7 +18,7 @@ export default function AlertDialogSlide(sub) {
   const [open, setOpen] = React.useState(false);
 
   function handleClickOpen() {
-    console.log(sub.subscriber._id);
+    console.log(sub.subscriber.id);
     setOpen(true);
   }
 
@@ -27,10 +27,10 @@ export default function AlertDialogSlide(sub) {
   }
 
   const deleteRequest = async (sub) => {
-    const id = sub.subscriber._id;
+    const id = sub.subscriber.id;
 
     const response = await fetch(
-      "http://localhost:8000/api/v1/requests/" + id,
+      "https://srv37158-15190.vps.etecsa.cu/api/v1/requests/" + id,
       {
         method: "DELETE",
         headers: {

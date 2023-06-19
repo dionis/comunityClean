@@ -22,6 +22,11 @@ en username colocaremos el nombre de nuestro usuario en postgres y en password l
 ```bash
 npx prisma generate
 ```
+
+Generamos la migración y creamos las tablas en la base de datos
+```bash
+npx prisma migrate dev --name init
+```
 Luego abrimos la consola y escribimos
 
 ```bash

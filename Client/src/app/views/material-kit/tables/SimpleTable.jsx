@@ -34,7 +34,7 @@ const SimpleTable = () => {
   useEffect(() => {
     const getList = async () => {
       const response = await fetch(
-        "http://localhost:8000/api/v1/requests/63dd26c9684b6d1d7b3e0c51",
+        "https://srv37158-15190.vps.etecsa.cu/api/v1/requests/user/1",
         {
           method: "GET",
           headers: {
@@ -45,7 +45,7 @@ const SimpleTable = () => {
       const objeto = await response.json();
       let lista = objeto.map((obj) => {
         return {
-          _id: obj._id,
+          id: obj.id,
           amountGarbage: obj.amountGarbage,
           stat: obj.stat,
           image_url: obj.image_url,
@@ -64,7 +64,7 @@ const SimpleTable = () => {
             <TableCell align="center">Id de Solicitud</TableCell>
             <TableCell align="center">Cantidad de Basura</TableCell>
             <TableCell align="center">Estado</TableCell>
-            <TableCell align="center">imagenes</TableCell>
+            <TableCell align="center">Imágenes</TableCell>
             <TableCell align="center">Dirección</TableCell>
             <TableCell align="center">Editar</TableCell>
             <TableCell align="center">Eliminar</TableCell>
@@ -73,12 +73,12 @@ const SimpleTable = () => {
         <TableBody>
           {subscribarList.map((subscriber, index) => (
             <TableRow key={index}>
-              <TableCell align="center">{subscriber._id}</TableCell>
+              <TableCell align="center">{subscriber.id}</TableCell>
               <TableCell align="center">{subscriber.amountGarbage}</TableCell>
               <TableCell align="center">
                 {subscriber.stat ? "Hecha" : "Pendiente"}
               </TableCell>
-              <TableCell align="center">{subscriber.image_url}</TableCell>
+              <TableCell align="center"><img src={subscriber.image_url}  style={{ width: '50%' }}/></TableCell>
               <TableCell align="center">{subscriber.locations}</TableCell>
               <TableCell align="center">
                 <SimpleCard>
