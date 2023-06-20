@@ -40,7 +40,8 @@ class DependencyInyection {
     // Datasources
     sl.registerLazySingleton<RemoteClientDatasource>(() =>
         DioRemoteClientDatasource(
-            url: 'http://192.168.1.106:8000/api/v1/requests/', client: sl()));
+            url: 'https://srv37158-15190.vps.etecsa.cu/api/v1/requests/',
+            client: sl()));
 
     // Core
     sl.registerLazySingleton<NetworkInfo>(

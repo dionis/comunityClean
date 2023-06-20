@@ -1,4 +1,4 @@
-import { Button, Card, styled } from '@mui/material';
+import { Button, Card, styled,Grid } from '@mui/material';
 import { convertHexToRGB } from 'app/utils/utils';
 
 const CardRoot = styled(Card)(({ theme }) => ({
@@ -25,12 +25,36 @@ const Paragraph = styled('p')(({ theme }) => ({
 
 const UpgradeCard = () => {
   return (
+    <Grid container spacing={3} sx={{ mb: 3 }}>
+      <Grid item xs={12} md={4}>
     <CardRoot>
       <StyledCard elevation={0}>
-        <img src="/assets/images/illustrations/upgrade.svg" alt="upgrade" />
+        <img src="/assets/car.png" style={{ width: '100px', height : '100px' }} alt="upgrade" />
 
         <Paragraph>
-          Upgrade to <b>MatX PRO</b> for <br /> more resources
+        Solicita la recogida de basura en tu hogar con un solo clic
+        </Paragraph>
+
+        <Button
+          size="large"
+          color="primary"
+          variant="contained"
+          sx={{ textTransform: 'uppercase' }}
+        ><a href='/material/form'>
+
+          Solicitar
+        </a>
+        </Button>
+      </StyledCard>
+    </CardRoot>
+    </Grid>
+    <Grid item xs={12} md={4}>
+    <CardRoot>
+      <StyledCard elevation={0}>
+      <img src="/assets/trees.png" style={{ width: '100px', height : '120px' }} alt="upgrade" />
+
+        <Paragraph>
+        Solicita la poda de árboles en tu hogar con un solo clic
         </Paragraph>
 
         <Button
@@ -39,10 +63,31 @@ const UpgradeCard = () => {
           variant="contained"
           sx={{ textTransform: 'uppercase' }}
         >
-          upgrade now
+          Solicitar
         </Button>
       </StyledCard>
     </CardRoot>
+    </Grid>
+    <Grid item xs={12} md={4}>
+    <CardRoot>
+      <StyledCard elevation={0}>
+      <img src="/assets/pluss.png" style={{ width: '110px', height : '120px' }} alt="upgrade" />
+      <Paragraph>
+        Agregar nuevos servicios a la plataforma.
+        </Paragraph>
+
+        <Button
+          size="large"
+          color="primary"
+          variant="contained"
+          sx={{ textTransform: 'uppercase' }}
+        >
+          Agregar
+        </Button>
+      </StyledCard>
+    </CardRoot>
+    </Grid>
+    </Grid>
   );
 };
 

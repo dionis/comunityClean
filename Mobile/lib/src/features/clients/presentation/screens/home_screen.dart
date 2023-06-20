@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Image.asset('assets/logo.png', scale: 3),
                 Text(
-                  'City Clean',
+                  'Community Clean',
                   style: GoogleFonts.pacifico(
                     color: Colors.white,
                     fontSize: 25,

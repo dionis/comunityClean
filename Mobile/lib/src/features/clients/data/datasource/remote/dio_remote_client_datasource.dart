@@ -79,7 +79,7 @@ class DioRemoteClientDatasource implements RemoteClientDatasource {
       final formData = FormData.fromMap({
         'image': await MultipartFile.fromFile(path),
       });
-      String baseUrl = 'http://192.168.1.106:8000';
+      String baseUrl = 'https://srv37158-15190.vps.etecsa.cu';
       final response = await _client.post('$baseUrl/upload', data: formData);
 
       if (response.statusCode == 200) {
