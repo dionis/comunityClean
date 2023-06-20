@@ -41,26 +41,41 @@ const RowCards = () => {
   const { palette } = useTheme();
   const textMuted = palette.text.secondary;
 
-  return [1, 2, 3, 4].map((id) => (
-    <Fragment key={id}>
-      <Card sx={{ py: 1, px: 2 }} className="project-card">
-        <Grid container alignItems="center">
+  // return [1, 2, 3, 4].map((id) => (
+  //   <Fragment key={id}>
+  //     <Card sx={{ py: 1, px: 2 }} className="project-card">
+  //       <Grid container alignItems="center">
           
-          <Grid item md={5} xs={7}>
-            <Box display="flex" alignItems="center">
-              <ProjectName>Project {id}</ProjectName>
-            </Box>
-          </Grid>
+  //         <Grid item md={5} xs={7}>
+  //           <Box display="flex" alignItems="center">
+  //             <ProjectName>Project {id}</ProjectName>
+  //           </Box>
+  //         </Grid>
 
-          <Grid item md={3} xs={4}>
-            <Box color={textMuted}>{format(new Date().getTime(), 'MM/dd/yyyy hh:mma')}</Box>
-          </Grid>
+  //         <Grid item md={3} xs={4}>
+  //           <Box color={textMuted}>{format(new Date().getTime(), 'MM/dd/yyyy hh:mma')}</Box>
+  //         </Grid>
 
-        </Grid>
-      </Card>
-      <Box py={1} />
-    </Fragment>
-  ));
+  //       </Grid>
+  //     </Card>
+  //     <Box py={1} />
+  //   </Fragment>
+  // ));
+  return <Card sx={{ py: 1, px: 2 }} className="project-card">
+  <Grid container alignItems="center">
+    
+    <Grid item md={5} xs={7}>
+      <Box display="flex" alignItems="center">
+        <ProjectName>Realizar Solicitud</ProjectName>
+      </Box>
+    </Grid>
+
+    <Grid item md={3} xs={4}>
+      <Box color={textMuted}>{format(new Date().getTime(), 'MM/dd/yyyy hh:mma')}</Box>
+    </Grid>
+
+  </Grid>
+</Card>;
 };
 
 export default RowCards;

@@ -18,11 +18,11 @@ export default function FormDialog(properties) {
 
   async function updateRequest() {
     const payload = {
-      amountGarbage: state.amountGarbage,
+      amountGarbage: parseInt(state.amountGarbage),
       locations: state.locations
     }
     const response = await fetch(
-      "http://localhost:8000/api/v1/requests/"+properties.subscriber._id,
+      "https://srv37158-15190.vps.etecsa.cu/api/v1/requests/"+properties.subscriber.id,
       {
         method: "PUT",
         headers: {

@@ -6,10 +6,12 @@ import users from "./user.routes";
 import admins from "./admin.routes";
 import stats from "./stats.routes";
 import workers from "./worker.routes";
+import payment from './payment.routes';
 
 const router = Router();
 router.use(cRequests);
 router.use(notifications);
+router.use(payment);
 router.use(groups);
 router.use(users);
 router.use(admins);
